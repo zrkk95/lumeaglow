@@ -1,13 +1,45 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import HeroSection from '@/components/sections/HeroSection';
+import ProductSection from '@/components/sections/ProductSection';
+import AdvantagesSection from '@/components/sections/AdvantagesSection';
+import AboutSection from '@/components/sections/AboutSection';
+import OrderTrackingSection from '@/components/sections/OrderTrackingSection';
+import FAQSection from '@/components/sections/FAQSection';
+import CommunitySection from '@/components/sections/CommunitySection';
+import ReviewsSection from '@/components/sections/ReviewsSection';
+import NewsletterSection from '@/components/sections/NewsletterSection';
+import { Helmet } from 'react-helmet-async';
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <>
+      <Helmet>
+        <title>AquaGlow - Lampe Méduse LED | Ambiance Océan Apaisante</title>
+        <meta 
+          name="description" 
+          content="Découvrez la Lampe Méduse AquaGlow : lampe LED à couleurs changeantes RGB qui recrée le mouvement naturel des méduses. Ambiance apaisante et hypnotisante. Livraison rapide, garantie 12 mois." 
+        />
+        <meta name="keywords" content="lampe méduse, lampe LED, décoration, ambiance, AquaGlow, veilleuse, relaxation" />
+        <link rel="canonical" href="https://aquaglow.fr" />
+      </Helmet>
+
+      <Header />
+      
+      <main>
+        <HeroSection />
+        <ProductSection />
+        <AdvantagesSection />
+        <AboutSection />
+        <OrderTrackingSection />
+        <FAQSection />
+        <CommunitySection />
+        <ReviewsSection />
+        <NewsletterSection />
+      </main>
+
+      <Footer />
+    </>
   );
 };
 

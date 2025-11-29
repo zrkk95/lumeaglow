@@ -19,6 +19,7 @@ import Confidentialite from "./pages/Confidentialite";
 import Livraison from "./pages/Livraison";
 import Retours from "./pages/Retours";
 import Garantie from "./pages/Garantie";
+import ProductPage from "./pages/ProductPage";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/produit/lampe-meduse-aquaglow" element={<ProductPage />} />
               <Route path="/panier" element={<Panier />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/confirmation" element={<Confirmation />} />

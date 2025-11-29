@@ -1,67 +1,62 @@
-import { Check, MapPin, Shield, Truck } from 'lucide-react';
+import { Users, Award, Clock } from 'lucide-react';
+import ambianceImage from '@/assets/lampe-meduse-ambiance.jpeg';
 
 const AboutSection = () => {
-  const badges = [
-    { icon: MapPin, label: 'Marque française' },
-    { icon: Shield, label: 'Garantie 12 mois' },
-    { icon: Truck, label: 'Livraison rapide' },
+  const stats = [
+    { icon: Users, value: 'Plus de 50 000', label: 'Clients satisfaits' },
+    { icon: Award, value: '95 %', label: 'Taux de satisfaction' },
+    { icon: Clock, value: '24h/24 et 7j/7', label: 'Service client' },
   ];
 
   return (
     <section id="a-propos" className="section-padding bg-background">
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Image */}
-          <div className="relative order-2 lg:order-1">
-            <div className="aspect-[4/3] bg-gradient-to-br from-primary/5 to-accent/5 rounded-3xl overflow-hidden border border-border/50 shadow-lg">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                    <span className="text-4xl">🌊</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Image d'ambiance AquaGlow
-                  </p>
-                </div>
-              </div>
-            </div>
-            {/* Decorative elements */}
-            <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-primary/10 rounded-full blur-2xl -z-10" />
-            <div className="absolute -top-4 -left-4 w-24 h-24 bg-accent/10 rounded-full blur-2xl -z-10" />
-          </div>
-
-          {/* Content */}
-          <div className="order-1 lg:order-2">
+          {/* Left Column - Content */}
+          <div className="animate-fade-in-up">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
               À propos d'<span className="gradient-text">AquaGlow</span>
             </h2>
 
             <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
               <p>
-                <strong className="text-foreground">AquaGlow</strong> est née d'une passion pour la beauté mystérieuse des océans et le design d'intérieur contemporain. Notre mission : apporter la sérénité et l'émerveillement de l'univers marin directement dans votre foyer.
+                Fondée sur la passion d'apporter la beauté paisible de l'océan dans les espaces du quotidien, AquaGlow est devenue une marque innovante en matière de solutions d'éclairage d'ambiance.
               </p>
               <p>
-                Depuis notre création, nous nous engageons à concevoir des produits qui allient esthétique raffinée, technologie innovante et respect de l'environnement. Chaque lampe AquaGlow est le fruit d'un processus de conception rigoureux visant à offrir une expérience visuelle unique et apaisante.
+                Notre aventure a commencé lorsque notre fondateur, fasciné par la danse gracieuse des méduses lors d'une expédition de biologie marine, a imaginé recréer cette magie à l'aide d'une technologie LED de pointe et d'un design artistique.
               </p>
               <p>
-                Notre engagement envers la qualité se reflète dans le choix minutieux de nos matériaux et nos contrôles stricts à chaque étape de fabrication. Nous testons rigoureusement chaque lampe pour garantir sa fiabilité et sa durabilité.
-              </p>
-              <p>
-                Le service client est au cœur de nos valeurs. Notre équipe réactive est disponible pour répondre à toutes vos questions et vous accompagner dans votre expérience AquaGlow, avant et après votre achat.
+                Notre mission est de transformer les espaces ordinaires en sanctuaires de paix et de beauté, grâce à une lumière douce, colorée et apaisante.
               </p>
             </div>
 
-            {/* Trust Badges */}
+            {/* Stats */}
             <div className="grid grid-cols-3 gap-4">
-              {badges.map((badge) => (
+              {stats.map((stat, index) => (
                 <div
-                  key={badge.label}
-                  className="flex flex-col items-center text-center p-4 bg-secondary/50 rounded-xl"
+                  key={stat.label}
+                  className="text-center p-4 bg-secondary/50 rounded-2xl"
                 >
-                  <badge.icon className="w-6 h-6 text-primary mb-2" />
-                  <span className="text-sm font-medium">{badge.label}</span>
+                  <stat.icon className="w-6 h-6 text-primary mx-auto mb-2" />
+                  <div className="text-lg font-bold text-foreground mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {stat.label}
+                  </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Right Column - Image */}
+          <div className="relative animate-fade-in delay-200">
+            <div className="relative rounded-3xl overflow-hidden shadow-lg">
+              <img
+                src={ambianceImage}
+                alt="Lampe méduse AquaGlow dans une ambiance cosy"
+                className="w-full h-auto object-cover aspect-[4/5]"
+              />
             </div>
           </div>
         </div>

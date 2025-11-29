@@ -1,88 +1,91 @@
-import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 const FAQSection = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
   const faqs = [
     {
-      question: 'Combien de couleurs sont disponibles ?',
-      answer: 'La Lampe Méduse AquaGlow offre un spectre complet de couleurs RGB, soit des millions de combinaisons possibles. Vous pouvez choisir une couleur fixe parmi les teintes prédéfinies (bleu océan, violet profond, rose corail, vert émeraude, etc.), ou activer le mode cycle automatique qui fait défiler harmonieusement toutes les couleurs. Un mode "coucher de soleil" et un mode "aurore boréale" sont également disponibles pour des ambiances spécifiques.',
-    },
-    {
-      question: 'Comment fonctionne la lampe ?',
-      answer: 'La lampe utilise un système de courant d\'eau contrôlé qui fait circuler les méduses en silicone de manière fluide et naturelle. Un moteur silencieux génère un flux d\'eau doux qui imite parfaitement le mouvement des vraies méduses dans l\'océan. Les LED RGB intégrées à la base illuminent l\'eau et les méduses, créant un effet visuel hypnotisant. Il suffit de brancher le câble USB fourni à n\'importe quelle source d\'alimentation (adaptateur, ordinateur, batterie externe) pour profiter du spectacle.',
+      question: 'Combien de couleurs peut afficher la lampe méduse ?',
+      answer: 'Notre lampe méduse AquaGlow peut afficher des millions de combinaisons de couleurs grâce à sa technologie LED RGB avancée. Vous pouvez choisir parmi des modes prédéfinis ou laisser la lampe parcourir automatiquement l\'ensemble du spectre de couleurs pour une expérience visuelle toujours renouvelée.',
     },
     {
       question: 'Que contient la boîte ?',
-      answer: 'Votre commande comprend : 1x Lampe Méduse AquaGlow complète avec sa base et son réservoir, 2x Méduses en silicone premium de couleurs différentes, 1x Câble USB d\'alimentation de 1,5 mètre, 1x Guide d\'utilisation détaillé en français avec instructions de mise en route et conseils d\'entretien, 1x Carte de garantie 12 mois. Tout est soigneusement emballé pour une livraison en parfait état.',
+      answer: 'La boîte contient : 1x Lampe Méduse AquaGlow complète, 2x méduses en silicone réalistes, 1x câble USB d\'alimentation, 1x télécommande (avec pile incluse), 1x guide d\'utilisation en français, et 1x carte de garantie 12 mois.',
     },
     {
-      question: 'Est-ce sûr de l\'utiliser comme veilleuse la nuit ?',
-      answer: 'Absolument. La Lampe AquaGlow est parfaitement sûre pour une utilisation continue, y compris pendant la nuit. Les LED utilisées ne chauffent quasiment pas, le moteur est ultra-basse consommation, et tous les composants électriques sont isolés du réservoir d\'eau. La lampe est certifiée conforme aux normes de sécurité européennes CE. De nombreux clients l\'utilisent comme veilleuse apaisante dans les chambres d\'enfants ou d\'adultes.',
+      question: 'Comment contrôler les changements de couleur ?',
+      answer: 'Vous pouvez contrôler la lampe de deux façons : via les commandes tactiles situées sur la base de la lampe, ou avec la télécommande incluse qui vous permet de changer les couleurs, régler la luminosité et sélectionner différents modes d\'éclairage depuis votre canapé.',
     },
     {
-      question: 'Quels sont les délais de livraison ?',
-      answer: 'Nous expédions votre commande sous 24 à 48 heures ouvrées après validation du paiement. La livraison standard en France métropolitaine prend généralement 3 à 5 jours ouvrés. Une option de livraison express est disponible (1-2 jours ouvrés) pour les commandes urgentes. Vous recevrez un e-mail de confirmation avec un numéro de suivi dès l\'expédition de votre colis.',
+      question: 'La lampe est-elle sûre à utiliser pendant la nuit ?',
+      answer: 'Absolument ! La lampe AquaGlow est conçue pour être utilisée en continu et en toute sécurité. Les LED ne chauffent pas, la consommation est très faible, et le fonctionnement est totalement silencieux. Elle est parfaite comme veilleuse apaisante dans une chambre.',
     },
     {
       question: 'Quelle est votre politique de retour ?',
-      answer: 'Nous offrons une politique de retour sans risque. Vous disposez de 30 jours après réception pour retourner votre lampe si elle ne vous convient pas, dans son emballage d\'origine et en parfait état. Le remboursement intégral sera effectué sous 5 jours ouvrés après réception du retour. Les frais de retour sont à votre charge, sauf en cas de produit défectueux où nous prenons en charge les frais de port.',
+      answer: 'Nous offrons une garantie satisfait ou remboursé de 30 jours. Si vous n\'êtes pas entièrement satisfait de votre achat, vous pouvez retourner la lampe dans son état d\'origine pour un remboursement complet, sans poser de questions.',
     },
     {
-      question: 'Livrez-vous à l\'international ?',
-      answer: 'Oui, nous livrons dans toute l\'Union européenne et dans plusieurs pays internationaux. Les frais de livraison varient selon la destination. Pour les pays hors UE, des droits de douane peuvent s\'appliquer selon la législation locale. Les délais de livraison internationale sont généralement de 7 à 15 jours ouvrés. Consultez notre page Livraison pour plus de détails sur les zones couvertes.',
+      question: 'Combien de temps prend la livraison ?',
+      answer: 'Les commandes sont expédiées sous 24 à 48 heures ouvrées. La livraison standard en France métropolitaine prend généralement 3 à 5 jours ouvrés. Vous recevrez un e-mail de confirmation avec un numéro de suivi dès l\'expédition.',
     },
     {
-      question: 'Quelle garantie offrez-vous ?',
-      answer: 'Toutes nos lampes AquaGlow sont couvertes par une garantie fabricant de 12 mois. Cette garantie couvre tous les défauts de fabrication et les dysfonctionnements non liés à une mauvaise utilisation. En cas de problème, notre service client vous proposera soit un remplacement, soit une réparation, soit un remboursement selon les circonstances. Notre équipe est disponible pour vous accompagner à chaque étape.',
+      question: 'Proposez-vous la livraison internationale ?',
+      answer: 'Oui, nous livrons dans plus de 50 pays à travers le monde ! Les frais et délais de livraison varient selon la destination. Les détails sont affichés lors du processus de commande.',
+    },
+    {
+      question: 'Quelle est la couverture de la garantie ?',
+      answer: 'Toutes nos lampes AquaGlow sont couvertes par une garantie fabricant de 12 mois. Cette garantie couvre tous les défauts de fabrication et les problèmes de fonctionnement normaux. Notre service client est disponible pour vous aider en cas de besoin.',
     },
   ];
 
   return (
     <section id="faq" className="section-padding bg-background">
       <div className="container-custom">
-        <div className="max-w-3xl mx-auto">
-          {/* Title */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-              Questions <span className="gradient-text">fréquentes</span>
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              Tout ce que vous devez savoir sur la Lampe Méduse AquaGlow
-            </p>
-          </div>
+        {/* Title */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+            Foire aux <span className="gradient-text">questions</span>
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Tout ce que vous devez savoir sur votre lampe méduse AquaGlow.
+          </p>
+        </div>
 
-          {/* FAQ Accordion */}
-          <div className="space-y-4">
+        {/* FAQ Accordion */}
+        <div className="max-w-3xl mx-auto mb-12">
+          <Accordion type="single" defaultValue="item-0" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
-              <div
+              <AccordionItem
                 key={index}
-                className="card-premium overflow-hidden"
+                value={`item-${index}`}
+                className="bg-white rounded-2xl border border-border/50 px-6 overflow-hidden shadow-sm"
               >
-                <button
-                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                  className="w-full flex items-center justify-between p-5 sm:p-6 text-left hover:bg-secondary/30 transition-colors"
-                >
-                  <span className="font-semibold pr-4">{faq.question}</span>
-                  <ChevronDown
-                    className={`w-5 h-5 text-primary flex-shrink-0 transition-transform duration-300 ${
-                      openIndex === index ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-                <div
-                  className={`overflow-hidden transition-all duration-300 ${
-                    openIndex === index ? 'max-h-96' : 'max-h-0'
-                  }`}
-                >
-                  <p className="px-5 sm:px-6 pb-5 sm:pb-6 text-muted-foreground leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
+                <AccordionTrigger className="text-left font-semibold text-foreground hover:text-primary py-5 hover:no-underline">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
+        </div>
+
+        {/* Contact CTA */}
+        <div className="text-center">
+          <p className="text-muted-foreground mb-4">
+            Vous avez encore des questions ? Nous sommes là pour vous aider !
+          </p>
+          <Link
+            to="/contact"
+            className="btn-primary"
+          >
+            Contacter l'assistance
+          </Link>
         </div>
       </div>
     </section>

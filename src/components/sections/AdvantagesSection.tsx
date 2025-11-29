@@ -1,64 +1,71 @@
-import { Lightbulb, Waves, Zap, VolumeX, Award, Settings } from 'lucide-react';
+import { Lightbulb, Waves, Palette, Volume2, Shield, Plug } from 'lucide-react';
 
 const AdvantagesSection = () => {
   const advantages = [
     {
       icon: Lightbulb,
-      title: 'LED avancée',
-      description: 'Technologie LED RGB haute performance offrant des millions de couleurs et une durée de vie exceptionnelle.',
+      title: 'Technologie LED avancée',
+      description: 'Nos lampes utilisent la dernière technologie LED pour l\'efficacité énergétique et des effets visuels époustouflants qui durent des années.',
     },
     {
       icon: Waves,
       title: 'Mouvement réaliste',
-      description: 'Méduses en silicone qui reproduisent fidèlement la grâce et la fluidité des vraies méduses.',
+      description: 'Des tentacules en silicone spécialement conçues créent des mouvements de méduses réalistes qui hypnotisent et détendent.',
     },
     {
-      icon: Zap,
-      title: 'Économie d\'énergie',
-      description: 'Consommation minimale grâce aux LED basse consommation. Fonctionne via USB standard.',
+      icon: Palette,
+      title: 'Changement de couleur dynamique',
+      description: 'Découvrez des millions de couleurs vibrantes avec des transitions automatiques fluides. Créez l\'ambiance parfaite avec des cycles personnalisables.',
     },
     {
-      icon: VolumeX,
-      title: 'Silencieuse',
-      description: 'Moteur ultra-silencieux pour une relaxation totale. Parfaite comme veilleuse.',
+      icon: Volume2,
+      title: 'Fonctionnement silencieux',
+      description: 'Profitez de l\'ambiance paisible sans aucun bruit. Parfait pour les chambres, bureaux et espaces de méditation.',
     },
     {
-      icon: Award,
+      icon: Shield,
       title: 'Matériaux premium',
-      description: 'Fabrication avec des matériaux de haute qualité, durables et certifiés sans danger.',
+      description: 'Fabriqué avec de l\'acrylique de haute qualité et du silicone de grade élevé pour la durabilité et la sécurité.',
     },
     {
-      icon: Settings,
+      icon: Plug,
       title: 'Installation simple',
-      description: 'Prête à l\'emploi en quelques minutes. Aucune configuration complexe requise.',
+      description: 'Branchez-la simplement en USB, remplissez le réservoir d\'eau et profitez du spectacle lumineux.',
     },
   ];
 
+  const scrollToProduct = () => {
+    const element = document.getElementById('produit');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="section-padding" style={{ background: 'var(--gradient-hero)' }}>
+    <section className="section-padding bg-secondary/30">
       <div className="container-custom">
         {/* Title */}
-        <div className="text-center mb-12 lg:mb-16">
+        <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            Pourquoi choisir <span className="gradient-text">AquaGlow</span> ?
+            Pourquoi choisir <span className="gradient-text">AquaGlow</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Une lampe d'exception conçue pour transformer votre intérieur
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Nos lampes méduses combinent une technologie de pointe avec un design artistique pour créer la solution d'éclairage d'ambiance parfaite pour tout espace.
           </p>
         </div>
 
         {/* Advantages Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16">
           {advantages.map((advantage, index) => (
             <div
               key={advantage.title}
-              className="group card-premium p-6 lg:p-8 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+              className="card-premium p-6 lg:p-8 bg-white animate-fade-in-up"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5">
                 <advantage.icon className="w-7 h-7 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">
+              <h3 className="text-xl font-bold mb-3 text-foreground">
                 {advantage.title}
               </h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -66,6 +73,22 @@ const AdvantagesSection = () => {
               </p>
             </div>
           ))}
+        </div>
+
+        {/* CTA Banner */}
+        <div className="banner-gradient rounded-3xl p-8 lg:p-12 text-center text-white">
+          <h3 className="text-2xl lg:text-3xl font-bold mb-4">
+            Prêt à transformer votre espace ?
+          </h3>
+          <p className="text-white/90 mb-8 max-w-2xl mx-auto">
+            Rejoignez les milliers de clients satisfaits qui ont découvert la magie des lampes méduses AquaGlow.
+          </p>
+          <button
+            onClick={scrollToProduct}
+            className="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold bg-white text-primary hover:bg-white/90 transition-all duration-300 hover:scale-105"
+          >
+            Commencer les achats maintenant
+          </button>
         </div>
       </div>
     </section>

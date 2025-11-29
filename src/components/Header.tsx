@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import CartDrawer from './CartDrawer';
@@ -9,6 +9,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { totalItems, openCart } = useCart();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,22 +23,79 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   }, [location]);
 
-  const navLinks = [
-    { href: '/', label: 'Accueil' },
-    { href: '/#produit', label: 'Produits' },
-    { href: '/#a-propos', label: 'À propos' },
-    { href: '/#faq', label: 'FAQ' },
-    { href: '/contact', label: 'Contact' },
-  ];
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
-  const scrollToProduct = () => {
-    const productSection = document.getElementById('produit');
-    if (productSection) {
-      productSection.scrollIntoView({ behavior: 'smooth' });
-    } else if (location.pathname !== '/') {
-      window.location.href = '/#produit';
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    setIsMobileMenuOpen(false);
+
+    if (href === '/') {
+      if (location.pathname === '/') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        navigate('/');
+      }
+      return;
+    }
+
+    if (href === '/produit/lampe-meduse-aquaglow') {
+      navigate(href);
+      return;
+    }
+
+    // Handle hash links for scrolling
+    const sectionId = href.replace('/#', '');
+    if (location.pathname === '/') {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate('/', { state: { scrollTo: sectionId } });
     }
   };
+
+  // Handle scroll after navigation
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      setTimeout(() => {
+        const element = document.getElementById(location.state.scrollTo);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [location]);
+
+  const scrollToProduct = () => {
+    setIsMobileMenuOpen(false);
+    if (location.pathname === '/') {
+      const productSection = document.getElementById('produit');
+      if (productSection) {
+        productSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate('/', { state: { scrollTo: 'produit' } });
+    }
+  };
+
+  const navLinks = [
+    { href: '/', label: 'Accueil' },
+    { href: '/produit/lampe-meduse-aquaglow', label: 'Produit' },
+    { href: '/#a-propos', label: 'À propos' },
+    { href: '/#faq', label: 'FAQ' },
+    { href: '/#footer', label: 'Contact' },
+  ];
 
   return (
     <>
@@ -58,16 +116,17 @@ const Header = () => {
               AquaGlow
             </Link>
 
-            {/* Navigation desktop */}
+            {/* Navigation desktop - Only visible on lg+ */}
             <nav className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => (
-                <Link
+                <a
                   key={link.href}
-                  to={link.href}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors link-hover"
                 >
                   {link.label}
-                </Link>
+                </a>
               ))}
             </nav>
 
@@ -87,15 +146,15 @@ const Header = () => {
                 )}
               </button>
 
-              {/* CTA desktop */}
+              {/* CTA desktop - Only visible on lg+ */}
               <button
                 onClick={scrollToProduct}
-                className="hidden sm:inline-flex btn-primary text-sm"
+                className="hidden lg:inline-flex btn-primary text-sm"
               >
                 Acheter maintenant
               </button>
 
-              {/* Menu mobile toggle */}
+              {/* Menu mobile toggle - Visible on mobile & tablet */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-2 rounded-full hover:bg-secondary transition-colors"
@@ -110,34 +169,39 @@ const Header = () => {
             </div>
           </div>
         </div>
-
-        {/* Menu mobile */}
-        <div
-          className={`lg:hidden absolute top-full left-0 right-0 bg-card/98 backdrop-blur-md border-b border-border shadow-lg transition-all duration-300 ${
-            isMobileMenuOpen
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 -translate-y-4 pointer-events-none'
-          }`}
-        >
-          <nav className="container-custom py-4 flex flex-col gap-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className="py-3 px-4 rounded-xl text-foreground/80 hover:text-primary hover:bg-secondary/50 transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
-            <button
-              onClick={scrollToProduct}
-              className="mt-2 btn-primary w-full"
-            >
-              Acheter maintenant
-            </button>
-          </nav>
-        </div>
       </header>
+
+      {/* Mobile Menu - Full screen overlay with blur */}
+      <div
+        className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ${
+          isMobileMenuOpen
+            ? 'opacity-100 visible'
+            : 'opacity-0 invisible pointer-events-none'
+        }`}
+      >
+        {/* Backdrop with blur */}
+        <div className="absolute inset-0 bg-white/95 backdrop-blur-md" />
+        
+        {/* Menu content */}
+        <nav className="relative z-10 h-full flex flex-col items-center justify-center gap-6 px-6">
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
+              className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+            >
+              {link.label}
+            </a>
+          ))}
+          <button
+            onClick={scrollToProduct}
+            className="mt-6 btn-primary text-lg px-8 py-4"
+          >
+            Acheter maintenant
+          </button>
+        </nav>
+      </div>
 
       {/* Cart Drawer */}
       <CartDrawer />

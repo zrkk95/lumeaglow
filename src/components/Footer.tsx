@@ -25,7 +25,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="footer-gradient text-white">
+    <footer id="footer" className="footer-gradient text-white">
       {/* Main Footer */}
       <div className="container-custom py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">

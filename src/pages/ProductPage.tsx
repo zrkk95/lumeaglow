@@ -12,7 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import productImage from '@/assets/lampe-meduse-product.jpeg';
+import productImage from '@/assets/lampe-meduse-product-new.jpeg';
 import ambianceImage from '@/assets/lampe-meduse-ambiance.jpeg';
 
 const ProductPage = () => {
@@ -95,7 +95,11 @@ const ProductPage = () => {
                   <p className="text-sm text-primary font-semibold uppercase tracking-wide mb-2">Changement de couleur RGB</p>
                   <h1 className="text-3xl lg:text-4xl font-bold mb-4">Lampe Méduse AquaGlow</h1>
                   <p className="text-muted-foreground mb-4">Transitions de couleurs dynamiques – parcours automatiquement des millions de couleurs éclatantes.</p>
-                  <span className="text-4xl font-bold text-primary">{product.price.toFixed(0)} €</span>
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-4xl font-bold gradient-text">{product.price.toFixed(0)} €</span>
+                    <span className="text-muted-foreground line-through">49 €</span>
+                    <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">-40%</span>
+                  </div>
                 </div>
 
                 {/* Quantity */}
@@ -133,7 +137,7 @@ const ProductPage = () => {
             <div className="max-w-3xl mx-auto">
               <Accordion type="single" collapsible className="space-y-4">
                 {specifications.map((spec, index) => (
-                  <AccordionItem key={index} value={`spec-${index}`} className="bg-white rounded-2xl border border-border/50 px-6">
+                  <AccordionItem key={index} value={`spec-${index}`} className="bg-card rounded-2xl border border-border/50 px-6">
                     <AccordionTrigger className="font-semibold hover:no-underline py-5">{spec.title}</AccordionTrigger>
                     <AccordionContent className="text-muted-foreground pb-5">{spec.content}</AccordionContent>
                   </AccordionItem>
@@ -150,12 +154,32 @@ const ProductPage = () => {
             <div className="max-w-3xl mx-auto">
               <Accordion type="single" collapsible className="space-y-4">
                 {faqs.map((faq, index) => (
-                  <AccordionItem key={index} value={`faq-${index}`} className="bg-white rounded-2xl border border-border/50 px-6">
+                  <AccordionItem key={index} value={`faq-${index}`} className="bg-card rounded-2xl border border-border/50 px-6">
                     <AccordionTrigger className="font-semibold hover:no-underline py-5">{faq.question}</AccordionTrigger>
                     <AccordionContent className="text-muted-foreground pb-5">{faq.answer}</AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
+            </div>
+          </div>
+        </section>
+
+        {/* Video Section */}
+        <section className="section-padding bg-secondary/30">
+          <div className="container-custom">
+            <h2 className="text-3xl font-bold mb-8 text-center">Voir la lampe <span className="gradient-text">en action</span></h2>
+            <div className="max-w-4xl mx-auto">
+              <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg bg-black">
+                <video
+                  className="w-full h-full object-cover"
+                  controls
+                  playsInline
+                  preload="metadata"
+                >
+                  <source src="/videos/aquaglow-demo.mp4" type="video/mp4" />
+                  Votre navigateur ne supporte pas la lecture de vidéos.
+                </video>
+              </div>
             </div>
           </div>
         </section>

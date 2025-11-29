@@ -1,16 +1,15 @@
 import { ArrowRight, ChevronDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import heroImage from '@/assets/lampe-meduse-hero.png';
 
 const HeroSection = () => {
-  const scrollToProduct = () => {
-    const element = document.getElementById('produit');
+  const scrollToVideo = () => {
+    const element = document.getElementById('video-demo');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  const scrollDown = () => {
+  const scrollToProduct = () => {
     const element = document.getElementById('produit');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -19,9 +18,9 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      {/* Background Image with Overlay */}
+      {/* Background Image with Overlay - Reduced height on desktop */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat lg:bg-[length:auto_85%] lg:bg-bottom"
         style={{ backgroundImage: `url(${heroImage})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
@@ -32,13 +31,13 @@ const HeroSection = () => {
           {/* Left Column - Content */}
           <div className="text-left max-w-xl">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6 animate-fade-in-up text-white">
-              Apportez la{' '}
-              <span className="gradient-text-hero">magie de l'océan</span>{' '}
-              à la maison
+              Quand la{' '}
+              <span className="gradient-text-hero">lumière</span>{' '}
+              prend vie
             </h1>
 
             <p className="text-lg sm:text-xl text-white/90 leading-relaxed mb-8 animate-fade-in-up delay-100">
-              Découvrez la beauté hypnotisante de notre lampe méduse premium avec une technologie LED à changement de couleur époustouflante. Transformez n'importe quel espace en un sanctuaire sous-marin tranquille avec des millions de couleurs vibrantes.
+              Transformez n'importe quel espace en une ambiance hypnotisante
             </p>
 
             {/* CTA Buttons */}
@@ -47,15 +46,15 @@ const HeroSection = () => {
                 onClick={scrollToProduct}
                 className="btn-primary text-lg px-8 py-4 flex items-center justify-center gap-2"
               >
-                Acheter maintenant – 30 €
+                Acheter maintenant
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <Link
-                to="/produit/lampe-meduse-aquaglow"
+              <button
+                onClick={scrollToVideo}
                 className="btn-outline-white text-lg px-8 py-4 text-center"
               >
                 Voir la démo
-              </Link>
+              </button>
             </div>
           </div>
 
@@ -64,10 +63,10 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Scroll Down Indicator */}
+      {/* Scroll Down Indicator - Centered on all devices */}
       <button 
-        onClick={scrollDown}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-bounce-slow cursor-pointer"
+        onClick={scrollToProduct}
+        className="absolute bottom-8 left-0 right-0 mx-auto w-fit z-10 animate-bounce-slow cursor-pointer"
         aria-label="Défiler vers le bas"
       >
         <ChevronDown className="w-8 h-8 text-white/80" />

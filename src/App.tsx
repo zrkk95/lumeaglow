@@ -33,6 +33,8 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/produit/lampe-meduse-lumeaglow" element={<ProductPage />} />
+              {/* Legacy route redirect */}
               <Route path="/produit/lampe-meduse-aquaglow" element={<ProductPage />} />
               <Route path="/panier" element={<Panier />} />
               <Route path="/checkout" element={<Checkout />} />

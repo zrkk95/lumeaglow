@@ -32,7 +32,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-1">
             <h3 className="text-2xl font-bold mb-4">
-              AquaGlow
+              LumeaGlow
             </h3>
             <p className="text-white/70 text-sm leading-relaxed mb-6">
               Transformez votre espace avec nos lampes méduses haut de gamme. Chaque pièce allie un design élégant à une technologie LED apaisante pour créer l'ambiance parfaite.
@@ -40,7 +40,7 @@ const Footer = () => {
             {/* Social Icons */}
             <div className="flex items-center gap-3">
               <a
-                href="https://instagram.com/aquaglow_officiel"
+                href="https://instagram.com/lumeaglow_officiel"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
@@ -48,7 +48,7 @@ const Footer = () => {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://tiktok.com/@aquaglow_vibes"
+                href="https://tiktok.com/@lumeaglow_vibes"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
@@ -56,7 +56,7 @@ const Footer = () => {
                 <TikTokIcon className="w-5 h-5" />
               </a>
               <a
-                href="https://youtube.com/@aquaglow"
+                href="https://youtube.com/@lumeaglow"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
@@ -72,7 +72,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {[
                 { to: '/', label: 'Maison' },
-                { to: '/produit/lampe-meduse-aquaglow', label: 'Produits' },
+                { to: '/produit/lampe-meduse-lumeaglow', label: 'Produits' },
                 { to: '/#a-propos', label: 'À propos de nous' },
                 { to: '/#faq', label: 'FAQ' },
                 { to: '/contact', label: 'Contact' },
@@ -133,7 +133,7 @@ const Footer = () => {
         <div className="container-custom py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-white/60 text-center sm:text-left">
-              © {currentYear} AquaGlow. Tous droits réservés.
+              © {currentYear} LumeaGlow. Tous droits réservés.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-white/60">
               <Link to="/confidentialite" className="hover:text-white transition-colors">

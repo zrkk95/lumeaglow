@@ -48,7 +48,7 @@ const Header = () => {
       return;
     }
 
-    if (href === '/produit/lampe-meduse-aquaglow') {
+    if (href === '/produit/lampe-meduse-lumeaglow') {
       navigate(href);
       return;
     }
@@ -77,21 +77,14 @@ const Header = () => {
     }
   }, [location]);
 
-  const scrollToProduct = () => {
+  const goToProduct = () => {
     setIsMobileMenuOpen(false);
-    if (location.pathname === '/') {
-      const productSection = document.getElementById('produit');
-      if (productSection) {
-        productSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    } else {
-      navigate('/', { state: { scrollTo: 'produit' } });
-    }
+    navigate('/produit/lampe-meduse-lumeaglow');
   };
 
   const navLinks = [
     { href: '/', label: 'Accueil' },
-    { href: '/produit/lampe-meduse-aquaglow', label: 'Produit' },
+    { href: '/produit/lampe-meduse-lumeaglow', label: 'Produit' },
     { href: '/#a-propos', label: 'À propos' },
     { href: '/#faq', label: 'FAQ' },
     { href: '/#footer', label: 'Contact' },
@@ -113,7 +106,7 @@ const Header = () => {
               to="/"
               className="text-xl lg:text-2xl font-bold gradient-text"
             >
-              AquaGlow
+              LumeaGlow
             </Link>
 
             {/* Navigation desktop - Only visible on lg+ */}
@@ -148,7 +141,7 @@ const Header = () => {
 
               {/* CTA desktop - Only visible on lg+ */}
               <button
-                onClick={scrollToProduct}
+                onClick={goToProduct}
                 className="hidden lg:inline-flex btn-primary text-sm"
               >
                 Acheter maintenant
@@ -179,8 +172,8 @@ const Header = () => {
             : 'opacity-0 invisible pointer-events-none'
         }`}
       >
-        {/* Backdrop with blur */}
-        <div className="absolute inset-0 bg-white/95 backdrop-blur-md" />
+        {/* Backdrop with blur - Fully opaque white background */}
+        <div className="absolute inset-0 bg-white backdrop-blur-md" />
         
         {/* Menu content */}
         <nav className="relative z-10 h-full flex flex-col items-center justify-center gap-6 px-6">
@@ -195,7 +188,7 @@ const Header = () => {
             </a>
           ))}
           <button
-            onClick={scrollToProduct}
+            onClick={goToProduct}
             className="mt-6 btn-primary text-lg px-8 py-4"
           >
             Acheter maintenant

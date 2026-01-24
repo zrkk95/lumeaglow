@@ -27,7 +27,7 @@ const CommunitySection = () => {
             Rejoignez la <span className="gradient-text">communauté !</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Échangez avec d'autres passionnés d'AquaGlow, partagez les photos de vos installations et découvrez des façons créatives d'embellir votre espace avec nos lampes méduses.
+            Échangez avec d'autres passionnés de LumeaGlow, partagez les photos de vos installations et découvrez des façons créatives d'embellir votre espace avec nos lampes méduses.
           </p>
         </div>
 
@@ -41,14 +41,14 @@ const CommunitySection = () => {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-foreground">Instagram</h3>
-                <p className="text-muted-foreground text-sm">@aquaglow_officiel</p>
+                <p className="text-muted-foreground text-sm">@lumeaglow_officiel</p>
               </div>
             </div>
             <p className="text-muted-foreground mb-6">
               Découvrez nos dernières créations et les installations de notre communauté.
             </p>
             <a
-              href="https://instagram.com/aquaglow_officiel"
+              href="https://instagram.com/lumeaglow_officiel"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center w-full px-6 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 hover:opacity-90 transition-all"
@@ -65,14 +65,14 @@ const CommunitySection = () => {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-foreground">TikTok</h3>
-                <p className="text-muted-foreground text-sm">@aquaglow_vibes</p>
+                <p className="text-muted-foreground text-sm">@lumeaglow_vibes</p>
               </div>
             </div>
             <p className="text-muted-foreground mb-6">
               Regardez nos vidéos satisfaisantes et les effets lumineux hypnotisants.
             </p>
             <a
-              href="https://tiktok.com/@aquaglow_vibes"
+              href="https://tiktok.com/@lumeaglow_vibes"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center w-full px-6 py-3 rounded-full font-semibold text-white bg-foreground hover:bg-foreground/90 transition-all"
@@ -97,7 +97,7 @@ const CommunitySection = () => {
         {/* Hashtag Banner */}
         <div className="banner-gradient rounded-3xl p-8 lg:p-12 text-center text-white">
           <h3 className="text-2xl lg:text-3xl font-bold mb-4">
-            #AmbianceAquaGlow
+            #AmbianceLumeaGlow
           </h3>
           <p className="text-white/90 mb-8 max-w-2xl mx-auto">
             Identifiez-nous dans vos publications et rejoignez notre communauté grandissante d'amoureux de l'océan !

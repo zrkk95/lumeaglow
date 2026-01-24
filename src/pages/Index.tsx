@@ -16,27 +16,37 @@ const Index = () => {
   return (
     <>
       <Helmet>
-        <title>AquaGlow - Lampe Méduse LED | Ambiance Océan Apaisante</title>
+        <title>LumeaGlow - Lampe Méduse LED | Ambiance Océan Apaisante</title>
         <meta 
           name="description" 
-          content="Découvrez la Lampe Méduse AquaGlow : lampe LED à couleurs changeantes RGB qui recrée le mouvement naturel des méduses. Ambiance apaisante et hypnotisante. Livraison rapide, garantie 12 mois." 
+          content="Découvrez la Lampe Méduse LumeaGlow : lampe LED à couleurs changeantes RGB qui recrée le mouvement naturel des méduses. Ambiance apaisante et hypnotisante. Livraison rapide, garantie 12 mois." 
         />
-        <meta name="keywords" content="lampe méduse, lampe LED, décoration, ambiance, AquaGlow, veilleuse, relaxation" />
-        <link rel="canonical" href="https://aquaglow.fr" />
+        <meta name="keywords" content="lampe méduse, lampe LED, décoration, ambiance, LumeaGlow, veilleuse, relaxation" />
+        <link rel="canonical" href="https://lumeaglow.fr" />
       </Helmet>
 
       <Header />
       
       <main>
+        {/* 1. Hero */}
         <HeroSection />
+        {/* 2. Product Section */}
         <ProductSection />
+        {/* 3. Advantages */}
         <AdvantagesSection />
+        {/* 4. About */}
         <AboutSection />
-        <OrderTrackingSection />
+        {/* 5. Video Section - after About */}
         <VideoSection />
-        <FAQSection />
+        {/* 6. Community */}
         <CommunitySection />
+        {/* 7. FAQ */}
+        <FAQSection />
+        {/* 8. Reviews */}
         <ReviewsSection />
+        {/* 9. Order Tracking */}
+        <OrderTrackingSection />
+        {/* 10. Newsletter */}
         <NewsletterSection />
       </main>
 

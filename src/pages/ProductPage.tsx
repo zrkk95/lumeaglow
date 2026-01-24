@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ShoppingCart, Check, Minus, Plus, ArrowRight } from 'lucide-react';
+import { ShoppingCart, Check, Minus, Plus, ArrowRight, ZoomIn, Play, Star, Users, MapPin, Shield } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useCart } from '@/contexts/CartContext';
@@ -12,14 +12,32 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+
+// Import all carousel images
 import productImage from '@/assets/lampe-meduse-product-new.jpeg';
-import ambianceImage from '@/assets/lampe-meduse-ambiance.jpeg';
+import carousel1Orange from '@/assets/carousel-1-orange.jpeg';
+import carousel2White from '@/assets/carousel-2-white.jpeg';
+import carousel3Desk from '@/assets/carousel-3-desk.jpeg';
+import carousel4Marble from '@/assets/carousel-4-marble.jpeg';
+import carousel5Colors from '@/assets/carousel-5-colors.jpeg';
 
 const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(0);
   const { addItem } = useCart();
   const product = DEFAULT_PRODUCT;
+
+  // Carousel images array
+  const carouselImages = [
+    { src: productImage, alt: 'Lampe Méduse LumeaGlow - Vue principale', type: 'image' },
+    { src: carousel1Orange, alt: 'Lampe Méduse LumeaGlow - Ambiance orange', type: 'image' },
+    { src: carousel2White, alt: 'Lampe Méduse LumeaGlow - Ambiance blanche', type: 'image' },
+    { src: carousel3Desk, alt: 'Lampe Méduse LumeaGlow - Sur bureau', type: 'image' },
+    { src: carousel4Marble, alt: 'Lampe Méduse LumeaGlow - Ambiance marbre', type: 'image' },
+    { src: carousel5Colors, alt: 'Lampe Méduse LumeaGlow - Multicolore', type: 'image' },
+    { src: '/videos/aquaglow-demo.mp4', alt: 'Vidéo démo', type: 'video' },
+  ];
 
   const handleAddToCart = () => {
     addItem({
@@ -49,12 +67,12 @@ const ProductPage = () => {
   };
 
   const specifications = [
-    { title: 'Design', content: 'La Lampe Méduse AquaGlow est conçue avec une esthétique moderne et épurée. Son réservoir cylindrique transparent met en valeur les mouvements gracieux des méduses artificielles.' },
+    { title: 'Design', content: 'La Lampe Méduse LumeaGlow est conçue avec une esthétique moderne et épurée. Son réservoir cylindrique transparent met en valeur les mouvements gracieux des méduses artificielles.' },
     { title: 'Technologie LED', content: 'Équipée de LED RGB haute performance, la lampe offre un spectre complet de couleurs avec des modes prédéfinis et des cycles personnalisables.' },
     { title: 'Matériaux & Sécurité', content: 'Base en ABS robuste, réservoir en acrylique résistant, méduses en silicone de qualité alimentaire. Certifié CE.' },
     { title: 'Dimensions', content: 'Hauteur : 35 cm | Diamètre : 10 cm | Poids : 0.8 kg | Câble USB : 1.5 mètre.' },
     { title: 'Utilisation recommandée', content: 'Parfaite comme veilleuse, décoration ou cadeau. Idéale pour chambres, salons, bureaux ou espaces de méditation.' },
-    { title: 'Contenu de la boîte', content: '1x Lampe Méduse AquaGlow, 2x Méduses en silicone, 1x Câble USB, 1x Télécommande, 1x Guide d\'utilisation, 1x Carte de garantie.' },
+    { title: 'Contenu de la boîte', content: '1x Lampe Méduse LumeaGlow, 2x Méduses en silicone, 1x Câble USB, 1x Télécommande, 1x Guide d\'utilisation, 1x Carte de garantie.' },
     { title: 'Entretien', content: 'Nettoyez l\'extérieur avec un chiffon doux. Changez l\'eau distillée tous les 3-4 mois.' },
     { title: 'Garantie 12 mois', content: 'Garantie complète couvrant tous les défauts de fabrication. Satisfait ou remboursé sous 30 jours.' },
   ];
@@ -65,27 +83,109 @@ const ProductPage = () => {
     { question: 'Quelle est la consommation électrique ?', answer: 'Très faible, environ 5W via alimentation USB.' },
   ];
 
+  const reviews = [
+    {
+      name: 'Marie L.',
+      role: 'Décoratrice d\'intérieur',
+      content: 'Cette lampe est absolument magnifique ! Les mouvements des méduses sont très réalistes et les couleurs sont superbes.',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face',
+    },
+    {
+      name: 'Thomas B.',
+      role: 'Étudiant',
+      content: 'Parfait pour mon studio ! L\'ambiance est incroyable, surtout le soir. Le fonctionnement silencieux est un vrai plus.',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+    },
+    {
+      name: 'Sophie D.',
+      role: 'Mère de famille',
+      content: 'Mes enfants sont fascinés par cette lampe. Elle les aide à s\'endormir plus facilement. La qualité est excellente.',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+    },
+    {
+      name: 'Pierre M.',
+      role: 'Développeur',
+      content: 'J\'utilise cette lampe dans mon bureau et elle m\'aide vraiment à me concentrer et à me détendre. Un excellent achat !',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+    },
+  ];
+
+  const stats = [
+    { icon: Users, value: 'Plus de 10 000', label: 'Clients satisfaits' },
+    { icon: Star, value: '4,9/5', label: 'Note moyenne' },
+    { icon: MapPin, value: '50 pays et plus', label: 'Pays de livraison' },
+    { icon: Shield, value: '2 ans', label: 'Garantie' },
+  ];
+
   return (
     <>
       <Helmet>
-        <title>Lampe Méduse AquaGlow | Lampe LED RGB Premium</title>
-        <meta name="description" content="Découvrez la Lampe Méduse AquaGlow : lampe LED RGB avec mouvements réalistes. Transformez votre espace. Livraison rapide, garantie 12 mois." />
+        <title>Lampe Méduse LumeaGlow | Lampe LED RGB Premium</title>
+        <meta name="description" content="Découvrez la Lampe Méduse LumeaGlow : lampe LED RGB avec mouvements réalistes. Transformez votre espace. Livraison rapide, garantie 12 mois." />
       </Helmet>
 
       <Header />
 
       <main className="pt-20">
-        {/* Product Section */}
+        {/* Product Section with Carousel */}
         <section className="section-padding bg-background">
           <div className="container-custom">
             <div className="grid lg:grid-cols-2 gap-12 items-start">
-              {/* Images */}
+              {/* Image Carousel */}
               <div className="space-y-4">
-                <div className="aspect-square bg-secondary/30 rounded-3xl overflow-hidden">
-                  <img src={productImage} alt="Lampe Méduse AquaGlow" className="w-full h-full object-cover" />
+                {/* Main Image */}
+                <div className="aspect-square bg-secondary/30 rounded-3xl overflow-hidden relative group">
+                  {carouselImages[selectedImage].type === 'video' ? (
+                    <video
+                      className="w-full h-full object-cover"
+                      controls
+                      playsInline
+                      preload="metadata"
+                    >
+                      <source src={carouselImages[selectedImage].src} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <>
+                      <img 
+                        src={carouselImages[selectedImage].src} 
+                        alt={carouselImages[selectedImage].alt} 
+                        className="w-full h-full object-cover"
+                      />
+                      <button 
+                        className="absolute top-4 right-4 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        aria-label="Zoom"
+                      >
+                        <ZoomIn className="w-5 h-5 text-foreground" />
+                      </button>
+                    </>
+                  )}
                 </div>
-                <div className="aspect-video bg-secondary/30 rounded-2xl overflow-hidden">
-                  <img src={ambianceImage} alt="Lampe en ambiance" className="w-full h-full object-cover" />
+
+                {/* Thumbnails */}
+                <div className="flex gap-3 overflow-x-auto pb-2">
+                  {carouselImages.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
+                        selectedImage === index 
+                          ? 'border-primary ring-2 ring-primary/20' 
+                          : 'border-transparent hover:border-border'
+                      }`}
+                    >
+                      {image.type === 'video' ? (
+                        <div className="w-full h-full bg-foreground/10 flex items-center justify-center">
+                          <Play className="w-6 h-6 text-primary" />
+                        </div>
+                      ) : (
+                        <img 
+                          src={image.src} 
+                          alt={image.alt} 
+                          className="w-full h-full object-cover"
+                        />
+                      )}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -93,7 +193,7 @@ const ProductPage = () => {
               <div className="space-y-6 lg:sticky lg:top-24">
                 <div>
                   <p className="text-sm text-primary font-semibold uppercase tracking-wide mb-2">Changement de couleur RGB</p>
-                  <h1 className="text-3xl lg:text-4xl font-bold mb-4">Lampe Méduse AquaGlow</h1>
+                  <h1 className="text-3xl lg:text-4xl font-bold mb-4">Lampe Méduse LumeaGlow</h1>
                   <p className="text-muted-foreground mb-4">Transitions de couleurs dynamiques – parcours automatiquement des millions de couleurs éclatantes.</p>
                   <div className="flex items-baseline gap-3">
                     <span className="text-4xl font-bold gradient-text">{product.price.toFixed(0)} €</span>
@@ -124,6 +224,16 @@ const ProductPage = () => {
 
                 <div className="flex items-center gap-2 text-sm text-primary font-medium">
                   <Check className="w-4 h-4" /><span>En stock – Expédition sous 24–48 h</span>
+                </div>
+
+                {/* Quick features */}
+                <div className="grid grid-cols-2 gap-2 pt-4">
+                  {['Tentacules en silicone réalistes', 'LED RGB multicolores', 'Modes automatiques & ambiance', 'Fonctionnement silencieux', 'Alimentation USB', 'Garantie 12 mois'].map((feature) => (
+                    <div key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Check className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -180,6 +290,78 @@ const ProductPage = () => {
                   Votre navigateur ne supporte pas la lecture de vidéos.
                 </video>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Reviews Section */}
+        <section className="section-padding bg-background">
+          <div className="container-custom">
+            {/* Title */}
+            <div className="text-center mb-12">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
+                Ce que disent <span className="gradient-text">nos clients</span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Ne vous fiez pas seulement à nos paroles. Voici ce que de vrais clients disent de leur expérience LumeaGlow.
+              </p>
+            </div>
+
+            {/* Reviews Grid */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              {reviews.map((review, index) => (
+                <div
+                  key={review.name}
+                  className="bg-white rounded-2xl p-6 shadow-md border border-border/30 animate-fade-in-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  {/* Stars */}
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                      />
+                    ))}
+                  </div>
+
+                  {/* Content */}
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                    "{review.content}"
+                  </p>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={review.avatar}
+                      alt={review.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                    <div>
+                      <p className="font-semibold text-foreground text-sm">
+                        {review.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{review.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {stats.map((stat, index) => (
+                <div
+                  key={stat.label}
+                  className="text-center p-6 bg-secondary/50 rounded-2xl"
+                >
+                  <stat.icon className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <div className="text-2xl font-bold text-foreground mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </section>

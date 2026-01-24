@@ -1,12 +1,19 @@
 import { ArrowRight, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import heroImage from '@/assets/lampe-meduse-hero.png';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+
   const scrollToVideo = () => {
     const element = document.getElementById('video-demo');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const goToProduct = () => {
+    navigate('/produit/lampe-meduse-lumeaglow');
   };
 
   const scrollToProduct = () => {
@@ -37,13 +44,13 @@ const HeroSection = () => {
             </h1>
 
             <p className="text-lg sm:text-xl text-white/90 leading-relaxed mb-8 animate-fade-in-up delay-100">
-              Transformez n'importe quel espace en une ambiance hypnotisante
+              Transformez n'importe quel espace en une ambiance hypnotisante.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-10 animate-fade-in-up delay-200">
               <button
-                onClick={scrollToProduct}
+                onClick={goToProduct}
                 className="btn-primary text-lg px-8 py-4 flex items-center justify-center gap-2"
               >
                 Acheter maintenant

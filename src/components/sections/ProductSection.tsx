@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { ShoppingCart, Zap, Check, Minus, Plus, ArrowRight } from 'lucide-react';
+import { ShoppingCart, Check, Minus, Plus, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '@/contexts/CartContext';
 import { DEFAULT_PRODUCT, createCheckoutAndRedirect, isShopifyConfigured } from '@/lib/shopify';
 import { toast } from '@/hooks/use-toast';
@@ -9,6 +10,7 @@ const ProductSection = () => {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { addItem } = useCart();
+  const navigate = useNavigate();
 
   const product = DEFAULT_PRODUCT;
 
@@ -27,35 +29,8 @@ const ProductSection = () => {
     });
   };
 
-  const handleBuyNow = async () => {
-    setIsLoading(true);
-    
-    if (!isShopifyConfigured()) {
-      addItem({
-        id: product.id,
-        variantId: product.variantId,
-        title: product.title,
-        price: product.price,
-        image: productImage,
-      }, quantity);
-      window.location.href = '/checkout';
-      return;
-    }
-
-    try {
-      await createCheckoutAndRedirect([
-        { merchandiseId: product.variantId, quantity }
-      ]);
-    } catch (error) {
-      console.error('Erreur checkout:', error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de créer la commande. Veuillez réessayer.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+  const handleBuyNow = () => {
+    navigate('/produit/lampe-meduse-lumeaglow');
   };
 
   const features = [
@@ -73,7 +48,7 @@ const ProductSection = () => {
         {/* Title - Smaller intro */}
         <div className="text-center mb-8">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 animate-fade-in-up">
-            Lampe Méduse <span className="gradient-text">AquaGlow</span>
+            Lampe Méduse <span className="gradient-text">LumeaGlow</span>
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
             Transformez votre espace grâce à la beauté envoûtante de notre lampe méduse haut de gamme.
@@ -88,7 +63,7 @@ const ProductSection = () => {
               <div className="relative aspect-square lg:aspect-[4/5] lg:max-h-[400px] bg-secondary/30 rounded-2xl overflow-hidden">
                 <img 
                   src={productImage} 
-                  alt="Lampe Méduse AquaGlow" 
+                  alt="Lampe Méduse LumeaGlow" 
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -155,17 +130,8 @@ const ProductSection = () => {
                     disabled={isLoading}
                     className="w-full btn-outline-primary flex items-center justify-center gap-2"
                   >
-                    {isLoading ? (
-                      <>
-                        <span className="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full" />
-                        Traitement...
-                      </>
-                    ) : (
-                      <>
-                        Commander maintenant
-                        <ArrowRight className="w-5 h-5" />
-                      </>
-                    )}
+                    Commander maintenant
+                    <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
 

@@ -44,7 +44,7 @@ const ReviewsSection = () => {
             Ce que disent <span className="gradient-text">nos clients</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Ne vous fiez pas seulement à nos paroles. Voici ce que de vrais clients disent de leur expérience AquaGlow.
+            Ne vous fiez pas seulement à nos paroles. Voici ce que de vrais clients disent de leur expérience LumeaGlow.
           </p>
         </div>
 

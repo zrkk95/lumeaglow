@@ -1,6 +1,9 @@
 import { Lightbulb, Waves, Palette, Volume2, Shield, Plug } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const AdvantagesSection = () => {
+  const navigate = useNavigate();
+
   const advantages = [
     {
       icon: Lightbulb,
@@ -34,11 +37,8 @@ const AdvantagesSection = () => {
     },
   ];
 
-  const scrollToProduct = () => {
-    const element = document.getElementById('produit');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const goToProduct = () => {
+    navigate('/produit/lampe-meduse-lumeaglow');
   };
 
   return (
@@ -47,7 +47,7 @@ const AdvantagesSection = () => {
         {/* Title */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            Pourquoi choisir <span className="gradient-text">AquaGlow</span>
+            Pourquoi choisir <span className="gradient-text">LumeaGlow</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
             Nos lampes méduses combinent une technologie de pointe avec un design artistique pour créer la solution d'éclairage d'ambiance parfaite pour tout espace.
@@ -81,10 +81,10 @@ const AdvantagesSection = () => {
             Prêt à transformer votre espace ?
           </h3>
           <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-            Rejoignez les milliers de clients satisfaits qui ont découvert la magie des lampes méduses AquaGlow.
+            Rejoignez les milliers de clients satisfaits qui ont découvert la magie des lampes méduses LumeaGlow.
           </p>
           <button
-            onClick={scrollToProduct}
+            onClick={goToProduct}
             className="inline-flex items-center justify-center px-8 py-4 rounded-full font-semibold bg-white text-primary hover:bg-white/90 transition-all duration-300 hover:scale-105"
           >
             Commencer les achats maintenant

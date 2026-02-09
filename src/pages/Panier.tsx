@@ -35,8 +35,8 @@ const Panier = () => {
   return (
     <>
       <Helmet>
-        <title>Votre Panier | AquaGlow</title>
-        <meta name="description" content="Consultez et gérez votre panier AquaGlow. Finalisez votre commande de Lampe Méduse LED." />
+        <title>Votre Panier | LumeaGlow</title>
+        <meta name="description" content="Consultez et gérez votre panier LumeaGlow. Finalisez votre commande de Lampe Méduse LED." />
       </Helmet>
 
       <Header />
@@ -63,7 +63,7 @@ const Panier = () => {
               <ShoppingBag className="w-20 h-20 mx-auto text-muted-foreground/30 mb-6" />
               <h2 className="text-2xl font-semibold mb-4">Votre panier est vide</h2>
               <p className="text-muted-foreground mb-8">
-                Découvrez notre Lampe Méduse AquaGlow et apportez la magie de l'océan chez vous.
+                Découvrez notre Lampe Méduse LumeaGlow et apportez la magie de l'océan chez vous.
               </p>
               <Link to="/#produit" className="btn-primary inline-flex items-center gap-2">
                 Voir le produit

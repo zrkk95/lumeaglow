@@ -93,8 +93,8 @@ const Checkout = () => {
   return (
     <>
       <Helmet>
-        <title>Finaliser la commande | AquaGlow</title>
-        <meta name="description" content="Finalisez votre commande AquaGlow. Paiement sécurisé et livraison rapide." />
+        <title>Finaliser la commande | LumeaGlow</title>
+        <meta name="description" content="Finalisez votre commande LumeaGlow. Paiement sécurisé et livraison rapide." />
       </Helmet>
 
       <Header />

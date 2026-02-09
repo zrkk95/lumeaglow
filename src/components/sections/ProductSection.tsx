@@ -79,10 +79,10 @@ const ProductSection = () => {
                   </p>
                   <div className="flex items-baseline gap-3">
                     <span className="text-3xl lg:text-4xl font-bold gradient-text">
-                      {product.price.toFixed(0)} €
+                      29,95 €
                     </span>
                     <span className="text-muted-foreground line-through">
-                      49 €
+                      49,90 €
                     </span>
                     <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
                       -40%
@@ -123,7 +123,7 @@ const ProductSection = () => {
                     className="w-full btn-primary flex items-center justify-center gap-2"
                   >
                     <ShoppingCart className="w-5 h-5" />
-                    Ajouter au panier – {(product.price * quantity).toFixed(0)} €
+                    Ajouter au panier – {(product.price * quantity).toFixed(2).replace('.', ',')} €
                   </button>
                   <button
                     onClick={handleBuyNow}

@@ -1,5 +1,11 @@
 import { Lightbulb, Waves, Palette, Volume2, Shield, Plug } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 const AdvantagesSection = () => {
   const navigate = useNavigate();
@@ -45,7 +51,7 @@ const AdvantagesSection = () => {
     <section className="section-padding bg-secondary/30">
       <div className="container-custom">
         {/* Title */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 lg:mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             Pourquoi choisir <span className="gradient-text">LumeaGlow</span>
           </h2>
@@ -54,8 +60,33 @@ const AdvantagesSection = () => {
           </p>
         </div>
 
-        {/* Advantages Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-16">
+        {/* Mobile: Accordion */}
+        <div className="lg:hidden mb-8">
+          <Accordion type="single" collapsible className="space-y-3">
+            {advantages.map((advantage, index) => (
+              <AccordionItem
+                key={advantage.title}
+                value={`advantage-${index}`}
+                className="bg-white rounded-xl border border-border/50 px-4"
+              >
+                <AccordionTrigger className="hover:no-underline py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <advantage.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="font-semibold text-foreground text-left">{advantage.title}</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground pb-4 pl-[52px] text-sm leading-relaxed">
+                  {advantage.description}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+
+        {/* Desktop: Grid */}
+        <div className="hidden lg:grid lg:grid-cols-3 gap-6 lg:gap-8 mb-16">
           {advantages.map((advantage, index) => (
             <div
               key={advantage.title}

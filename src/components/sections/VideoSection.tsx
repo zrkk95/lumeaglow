@@ -7,20 +7,19 @@ const VideoSection = () => {
             Voir la lampe <span className="gradient-text">en action</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Découvrez la magie des couleurs et les mouvements hypnotisants de la Lampe Méduse AquaGlow
+            Découvrez la magie des couleurs et les mouvements hypnotisants de la Lampe Méduse LumeaGlow
           </p>
         </div>
 
         <div className="max-w-4xl mx-auto">
           <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg bg-black">
             <video
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
               controls
               playsInline
               preload="metadata"
-              poster="/videos/aquaglow-demo.mp4#t=0.1"
             >
-              <source src="/videos/aquaglow-demo.mp4" type="video/mp4" />
+              <source src="/videos/lumeaglow-demo.mp4" type="video/mp4" />
               Votre navigateur ne supporte pas la lecture de vidéos.
             </video>
           </div>

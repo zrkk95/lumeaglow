@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Youtube } from 'lucide-react';
+import { Instagram } from 'lucide-react';
 
 // TikTok icon component
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -48,20 +48,12 @@ const Footer = () => {
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="https://tiktok.com/@lumeaglow_vibes"
+                href="https://www.tiktok.com/@lumea.glow04"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
               >
                 <TikTokIcon className="w-5 h-5" />
-              </a>
-              <a
-                href="https://youtube.com/@lumeaglow"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
-              >
-                <Youtube className="w-5 h-5" />
               </a>
             </div>
           </div>

@@ -65,14 +65,14 @@ const CommunitySection = () => {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-foreground">TikTok</h3>
-                <p className="text-muted-foreground text-sm">@lumeaglow_vibes</p>
+                <p className="text-muted-foreground text-sm">@lumea.glow04</p>
               </div>
             </div>
             <p className="text-muted-foreground mb-6">
               Regardez nos vidéos satisfaisantes et les effets lumineux hypnotisants.
             </p>
             <a
-              href="https://tiktok.com/@lumeaglow_vibes"
+              href="https://www.tiktok.com/@lumea.glow04"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center w-full px-6 py-3 rounded-full font-semibold text-white bg-foreground hover:bg-foreground/90 transition-all"
@@ -103,9 +103,12 @@ const CommunitySection = () => {
             Identifiez-nous dans vos publications et rejoignez notre communauté grandissante d'amoureux de l'océan !
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold bg-white text-primary hover:bg-white/90 transition-all">
+            <a
+              href="mailto:lumeaglowlamp@gmail.com?subject=Photo%20%23AmbianceLumeaGlow"
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold bg-white text-primary hover:bg-white/90 transition-all"
+            >
               Partagez votre photo
-            </button>
+            </a>
             <button className="inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold bg-white/10 text-white border border-white/30 hover:bg-white/20 transition-all">
               Voir la galerie
             </button>

@@ -236,10 +236,10 @@ export async function createCheckoutAndRedirect(lines: Array<{ merchandiseId: st
 
 // Données produit par défaut (fallback quand Shopify n'est pas configuré)
 export const DEFAULT_PRODUCT = {
-  id: 'lampe-meduse-aquaglow',
-  variantId: 'lampe-meduse-aquaglow-default',
-  title: 'Lampe Méduse AquaGlow',
-  price: 30,
+  id: 'lampe-meduse-lumeaglow',
+  variantId: 'lampe-meduse-lumeaglow-default',
+  title: 'Lampe Méduse LumeaGlow',
+  price: 29.95,
   description: 'Lampe LED à couleurs changeantes RGB',
   image: '/placeholder.svg',
   available: true,

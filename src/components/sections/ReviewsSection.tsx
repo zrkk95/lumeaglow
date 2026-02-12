@@ -43,11 +43,14 @@ const ReviewsSection = () => {
   };
 
   return (
-    <section className="section-padding bg-background">
+    <section id="reviews-section" className="section-padding bg-background">
       <div className="container-custom max-w-3xl">
-        {/* Header with average + histogram */}
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">Avis</h2>
+        {/* Section title */}
+        <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">
+          Ce que disent nos <span className="text-emerald-500">clients</span>
+        </h2>
 
+        {/* Header with average + histogram */}
         <div className="flex flex-col sm:flex-row items-center gap-6 mb-6 p-6 bg-card rounded-2xl border border-border/50">
           {/* Left: Average */}
           <div className="flex flex-col items-center gap-1 min-w-[120px]">
@@ -59,11 +62,11 @@ const ReviewsSection = () => {
               ))}
             </div>
             {/* Avis Vérifiés badge */}
-            <div className="flex items-center gap-1.5 mt-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full">
+            <div className="flex items-center gap-1.5 mt-3 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full">
               <Check className="w-3.5 h-3.5 text-emerald-600" />
               <span className="text-xs font-semibold text-emerald-700">Avis Vérifiés</span>
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1 text-center">Basé sur {TOTAL_REVIEWS} avis soumis à un contrôle</p>
+            <p className="text-[11px] text-muted-foreground mt-1.5 text-center leading-tight">Basé sur {TOTAL_REVIEWS} avis soumis<br/>à un contrôle</p>
           </div>
 
           {/* Right: Histogram */}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ShoppingCart, Check, Minus, Plus, ArrowRight, ZoomIn, Play } from 'lucide-react';
+import { ShoppingCart, Check, Minus, Plus, ArrowRight, ZoomIn, Play, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useCart } from '@/contexts/CartContext';
@@ -165,6 +165,25 @@ const ProductPage = () => {
                   <p className="text-sm text-primary font-semibold uppercase tracking-wide mb-2">Changement de couleur RGB</p>
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 lg:mb-4">Lampe Méduse LumeaGlow</h1>
                   <p className="text-sm lg:text-base text-muted-foreground mb-3 lg:mb-4">Transitions de couleurs dynamiques – parcours automatiquement des millions de couleurs éclatantes.</p>
+                  
+                  {/* Rating badge - click to scroll to reviews */}
+                  <button
+                    onClick={() => document.getElementById('reviews-section')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="flex flex-wrap items-center gap-2 group cursor-pointer"
+                  >
+                    <div className="flex gap-0.5">
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <Star key={s} className={`w-4 h-4 ${s <= 4 ? 'fill-yellow-400 text-yellow-400' : 'fill-yellow-400/70 text-yellow-400/70'}`} />
+                      ))}
+                    </div>
+                    <span className="text-sm font-semibold">4,8</span>
+                    <span className="text-sm text-muted-foreground group-hover:underline">(14 avis)</span>
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-200 rounded-full">
+                      <Check className="w-3 h-3 text-emerald-600" />
+                      <span className="text-[10px] font-semibold text-emerald-700">Avis Vérifiés</span>
+                    </div>
+                  </button>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">Basé sur 14 avis soumis à un contrôle</p>
                 </div>
 
                 {/* 2. Price */}

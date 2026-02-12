@@ -8,7 +8,7 @@ import OrderTrackingSection from '@/components/sections/OrderTrackingSection';
 import VideoSection from '@/components/sections/VideoSection';
 import FAQSection from '@/components/sections/FAQSection';
 import CommunitySection from '@/components/sections/CommunitySection';
-import ReviewsSection from '@/components/sections/ReviewsSection';
+
 import HomeReviewsSlider from '@/components/sections/HomeReviewsSlider';
 import NewsletterSection from '@/components/sections/NewsletterSection';
 import { Helmet } from 'react-helmet-async';
@@ -45,8 +45,6 @@ const Index = () => {
         <FAQSection />
         {/* 8. Reviews Slider */}
         <HomeReviewsSlider />
-        {/* 8b. Full Reviews */}
-        <ReviewsSection />
         {/* 9. Order Tracking */}
         <OrderTrackingSection />
         {/* 10. Newsletter */}

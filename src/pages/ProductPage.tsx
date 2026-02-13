@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ShoppingCart, Check, Minus, Plus, ArrowRight, ZoomIn, Play, Star } from 'lucide-react';
+import { ShoppingCart, Check, Minus, Plus, ArrowRight, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ProductImageSlider from '@/components/ProductImageSlider';
 import { useCart } from '@/contexts/CartContext';
 import { DEFAULT_PRODUCT, createCheckoutAndRedirect, isShopifyConfigured } from '@/lib/shopify';
 import { toast } from '@/hooks/use-toast';
@@ -94,69 +95,18 @@ const ProductPage = () => {
 
       <Header />
 
-      <main className="pt-20">
+      <main className="pt-16">
         {/* Product Section with Carousel */}
         <section className="section-padding bg-background">
           <div className="container-custom">
             {/* Mobile: single column, Desktop: 2 columns */}
             <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
               {/* Image Carousel */}
-              <div className="w-full space-y-3 lg:space-y-4">
-                {/* Main Image - mobile: contain with stable height, desktop: cover */}
-                <div className="w-full h-[340px] sm:h-[400px] lg:aspect-square lg:h-auto bg-secondary/30 rounded-2xl lg:rounded-3xl overflow-hidden relative group">
-                  {carouselImages[selectedImage].type === 'video' ? (
-                    <video
-                      className="w-full h-full object-contain"
-                      controls
-                      playsInline
-                      preload="metadata"
-                    >
-                      <source src={carouselImages[selectedImage].src} type="video/mp4" />
-                    </video>
-                  ) : (
-                    <>
-                      <img 
-                        src={carouselImages[selectedImage].src} 
-                        alt={carouselImages[selectedImage].alt} 
-                        className="w-full h-full object-contain lg:object-cover"
-                      />
-                      <button 
-                        className="absolute top-4 right-4 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                        aria-label="Zoom"
-                      >
-                        <ZoomIn className="w-5 h-5 text-foreground" />
-                      </button>
-                    </>
-                  )}
-                </div>
-
-                {/* Thumbnails */}
-                <div className="flex gap-2 lg:gap-3 overflow-x-auto pb-2">
-                  {carouselImages.map((image, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedImage(index)}
-                      className={`relative flex-shrink-0 w-16 h-16 lg:w-20 lg:h-20 rounded-lg lg:rounded-xl overflow-hidden border-2 transition-all ${
-                        selectedImage === index 
-                          ? 'border-primary ring-2 ring-primary/20' 
-                          : 'border-transparent hover:border-border'
-                      }`}
-                    >
-                      {image.type === 'video' ? (
-                        <div className="w-full h-full bg-foreground/10 flex items-center justify-center">
-                          <Play className="w-5 h-5 lg:w-6 lg:h-6 text-primary" />
-                        </div>
-                      ) : (
-                        <img 
-                          src={image.src} 
-                          alt={image.alt} 
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <ProductImageSlider
+                carouselImages={carouselImages}
+                selectedImage={selectedImage}
+                setSelectedImage={setSelectedImage}
+              />
 
               {/* Product Info - Mobile: proper order */}
               <div className="w-full space-y-4 lg:space-y-6 lg:sticky lg:top-24">

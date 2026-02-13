@@ -12,7 +12,7 @@ const parseDate = (d: string) => {
 };
 
 const ReviewsSection = () => {
-  const [sort, setSort] = useState<SortOption>('recent');
+  const [sort, setSort] = useState<SortOption>('best');
   const [search, setSearch] = useState('');
   const [sortOpen, setSortOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -29,7 +29,9 @@ const ReviewsSection = () => {
       .sort((a, b) => {
         if (sort === 'recent') return parseDate(b.reviewDate).getTime() - parseDate(a.reviewDate).getTime();
         if (sort === 'best') return b.rating - a.rating || parseDate(b.reviewDate).getTime() - parseDate(a.reviewDate).getTime();
-        return a.rating - b.rating || parseDate(b.reviewDate).getTime() - parseDate(a.reviewDate).getTime();
+        if (sort === 'worst') return a.rating - b.rating || parseDate(b.reviewDate).getTime() - parseDate(a.reviewDate).getTime();
+        // Default: 5★ first, then 4★ (best social proof order)
+        return b.rating - a.rating || parseDate(b.reviewDate).getTime() - parseDate(a.reviewDate).getTime();
       });
   }, [sort, search]);
 
@@ -47,7 +49,7 @@ const ReviewsSection = () => {
       <div className="container-custom max-w-3xl">
         {/* Section title */}
         <h2 className="text-2xl sm:text-3xl font-bold mb-8 text-center">
-          Ce que disent nos <span className="text-emerald-500">clients</span>
+          Ce que disent nos clients
         </h2>
 
         {/* Header with average + histogram */}

@@ -102,16 +102,13 @@ const CommunitySection = () => {
           <p className="text-white/90 mb-8 max-w-2xl mx-auto">
             Identifiez-nous dans vos publications et rejoignez notre communauté grandissante d'amoureux de l'océan !
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <a
               href="mailto:lumeaglowlamp@gmail.com?subject=Photo%20%23AmbianceLumeaGlow"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold bg-white text-primary hover:bg-white/90 transition-all"
+              className="inline-flex items-center justify-center px-8 py-3 rounded-full font-semibold bg-white text-primary hover:bg-white/90 transition-all"
             >
               Partagez votre photo
             </a>
-            <button className="inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold bg-white/10 text-white border border-white/30 hover:bg-white/20 transition-all">
-              Voir la galerie
-            </button>
           </div>
         </div>
       </div>

@@ -56,6 +56,9 @@ const AboutSection = () => {
                 src={ambianceImage}
                 alt="Lampe méduse LumeaGlow dans une ambiance cosy"
                 className="w-full h-auto object-cover aspect-[4/5]"
+                loading="lazy"
+                width={748}
+                height={935}
               />
             </div>
           </div>

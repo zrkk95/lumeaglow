@@ -26,10 +26,15 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       {/* Background Image with Overlay - Reduced height on desktop */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat lg:bg-[length:auto_85%] lg:bg-bottom"
-        style={{ backgroundImage: `url(${heroImage})` }}
-      >
+      <div className="absolute inset-0 overflow-hidden">
+        <img
+          src={heroImage}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center lg:object-bottom"
+          fetchPriority="high"
+          width={1342}
+          height={940}
+        />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
       </div>
 

@@ -65,6 +65,9 @@ const ProductSection = () => {
                   src={productImage} 
                   alt="Lampe Méduse LumeaGlow" 
                   className="w-full h-full object-cover"
+                  loading="lazy"
+                  width={417}
+                  height={400}
                 />
               </div>
 

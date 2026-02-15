@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { Volume2, VolumeX } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
 import { ShoppingCart, Check, Minus, Plus, ArrowRight, Star } from 'lucide-react';
 import Header from '@/components/Header';
@@ -14,6 +15,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import ReviewsSection from '@/components/sections/ReviewsSection';
+import AvisVerifiesLogo from '@/components/AvisVerifiesLogo';
 
 // Import all carousel images
 import productImage from '@/assets/lampe-meduse-product-new.jpeg';
@@ -97,7 +99,7 @@ const ProductPage = () => {
 
       <main className="pt-16">
         {/* Product Section with Carousel */}
-        <section className="section-padding bg-background">
+        <section className="py-6 sm:py-8 lg:py-10 bg-background">
           <div className="container-custom">
             {/* Mobile: single column, Desktop: 2 columns */}
             <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
@@ -128,10 +130,7 @@ const ProductPage = () => {
                     </div>
                     <span className="text-sm font-semibold">4,8</span>
                     <span className="text-sm text-muted-foreground group-hover:underline">(14 avis)</span>
-                    <div className="flex items-center gap-1 px-2 py-0.5 bg-emerald-50 border border-emerald-200 rounded-full">
-                      <Check className="w-3 h-3 text-emerald-600" />
-                      <span className="text-[10px] font-semibold text-emerald-700">Avis Vérifiés</span>
-                    </div>
+                    <AvisVerifiesLogo height={20} />
                   </button>
                   <p className="text-[10px] text-muted-foreground mt-0.5">Basé sur 14 avis soumis à un contrôle</p>
                 </div>
@@ -216,25 +215,8 @@ const ProductPage = () => {
           </div>
         </section>
 
-        {/* Video Section */}
-        <section className="section-padding bg-secondary/30">
-          <div className="container-custom">
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Voir la lampe <span className="gradient-text">en action</span></h2>
-            <div className="max-w-4xl mx-auto">
-              <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg bg-black">
-                <video
-                  className="w-full h-full object-contain"
-                  controls
-                  playsInline
-                  preload="metadata"
-                >
-                  <source src="/videos/lumeaglow-demo.mp4" type="video/mp4" />
-                  Votre navigateur ne supporte pas la lecture de vidéos.
-                </video>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Video Section - same behavior as homepage */}
+        <ProductVideoSection />
 
         {/* Reviews Section */}
         <ReviewsSection />
@@ -242,6 +224,67 @@ const ProductPage = () => {
 
       <Footer />
     </>
+  );
+};
+
+const ProductVideoSection = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.4 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !muted;
+      setMuted(!muted);
+    }
+  };
+
+  return (
+    <section className="section-padding bg-secondary/30">
+      <div className="container-custom">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">
+          Voir la lampe <span className="gradient-text">en action</span>
+        </h2>
+        <div className="max-w-4xl mx-auto">
+          <div className="relative rounded-2xl overflow-hidden shadow-lg bg-black" style={{ aspectRatio: '16/10' }}>
+            <video
+              ref={videoRef}
+              className="w-full h-full object-cover"
+              muted={muted}
+              loop
+              playsInline
+              preload="metadata"
+            >
+              <source src="/videos/lumeaglow-demo.mp4" type="video/mp4" />
+              Votre navigateur ne supporte pas la lecture de vidéos.
+            </video>
+            <button
+              onClick={toggleMute}
+              className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors z-10"
+              aria-label={muted ? 'Activer le son' : 'Couper le son'}
+            >
+              {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

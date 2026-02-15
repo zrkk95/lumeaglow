@@ -3,6 +3,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { Star, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import reviews from '@/data/reviews';
 import type { Review } from '@/data/reviews';
+import AvisVerifiesLogo from '@/components/AvisVerifiesLogo';
 
 const formatDateShort = (dateStr: string) => {
   const [day, month, year] = dateStr.split('/');
@@ -62,12 +63,8 @@ const HomeReviewsSlider = () => {
           Ce que disent nos clients
         </h2>
 
-        {/* Badge */}
         <div className="flex flex-col items-center gap-1.5 mb-10">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full">
-            <Check className="w-3.5 h-3.5 text-emerald-600" />
-            <span className="text-xs font-semibold text-emerald-700">Avis Vérifiés</span>
-          </div>
+          <AvisVerifiesLogo height={24} />
           <p className="text-[11px] text-muted-foreground text-center">Basé sur {reviews.length} avis soumis à un contrôle</p>
         </div>
 

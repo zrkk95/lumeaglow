@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Star, Check, ThumbsUp, ExternalLink, Search, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import reviews, { TOTAL_REVIEWS, AVERAGE_RATING, RATING_COUNTS } from '@/data/reviews';
 import type { Review } from '@/data/reviews';
+import AvisVerifiesLogo from '@/components/AvisVerifiesLogo';
 
 type SortOption = 'recent' | 'best' | 'worst';
 const REVIEWS_PER_PAGE = 5;
@@ -63,10 +64,8 @@ const ReviewsSection = () => {
                 <Star key={s} className={`w-4 h-4 ${s <= Math.round(AVERAGE_RATING) ? 'fill-yellow-400 text-yellow-400' : 'fill-muted text-muted'}`} />
               ))}
             </div>
-            {/* Avis Vérifiés badge */}
-            <div className="flex items-center gap-1.5 mt-3 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full">
-              <Check className="w-3.5 h-3.5 text-emerald-600" />
-              <span className="text-xs font-semibold text-emerald-700">Avis Vérifiés</span>
+            <div className="mt-3">
+              <AvisVerifiesLogo height={22} />
             </div>
             <p className="text-[11px] text-muted-foreground mt-1.5 text-center leading-tight">Basé sur {TOTAL_REVIEWS} avis soumis<br/>à un contrôle</p>
           </div>

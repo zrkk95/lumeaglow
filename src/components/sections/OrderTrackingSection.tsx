@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { Package, Truck, CheckCircle2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const OrderTrackingSection = () => {
-  const titleRef = useScrollReveal<HTMLDivElement>();
-  const formRef = useScrollReveal<HTMLDivElement>({ delay: 80 });
-  const stepsRef = useScrollReveal<HTMLDivElement>({ delay: 140, variant: 'image' });
   const [orderNumber, setOrderNumber] = useState('');
   const [email, setEmail] = useState('');
 
@@ -50,7 +46,7 @@ const OrderTrackingSection = () => {
     <section id="suivi" className="section-padding bg-secondary/30">
       <div className="container-custom">
         {/* Title */}
-        <div className="text-center mb-12" ref={titleRef}>
+        <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             Suivre votre <span className="gradient-text">commande</span>
           </h2>
@@ -60,7 +56,7 @@ const OrderTrackingSection = () => {
         </div>
 
         {/* Form */}
-        <div className="max-w-xl mx-auto mb-16" ref={formRef}>
+        <div className="max-w-xl mx-auto mb-16">
           <form
             onSubmit={handleSubmit}
             className="bg-white rounded-2xl shadow-md p-6 sm:p-8 space-y-4"
@@ -96,7 +92,7 @@ const OrderTrackingSection = () => {
         </div>
 
         {/* Steps */}
-        <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto" ref={stepsRef}>
+        <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {steps.map((step, index) => (
             <div
               key={step.title}

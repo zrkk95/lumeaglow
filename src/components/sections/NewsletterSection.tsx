@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Mail, Check, Users, Shield, Bell } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const NewsletterSection = () => {
-  const sectionRef = useScrollReveal<HTMLDivElement>();
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -37,7 +35,7 @@ const NewsletterSection = () => {
   return (
     <section className="py-20 sm:py-24 lg:py-32 banner-gradient">
       <div className="container-custom">
-        <div className="max-w-3xl mx-auto text-center" ref={sectionRef}>
+        <div className="max-w-3xl mx-auto text-center">
           {/* Title */}
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-white">
             Restez dans le flux

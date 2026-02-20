@@ -1,5 +1,4 @@
 import { Instagram, Share2, Gift, Sparkles } from 'lucide-react';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 // TikTok icon component
 const TikTokIcon = ({ className }: { className?: string }) => (
@@ -19,15 +18,11 @@ const CommunitySection = () => {
     { icon: Sparkles, text: 'Laissez-vous inspirer' },
   ];
 
-  const titleRef = useScrollReveal<HTMLDivElement>();
-  const cardsRef = useScrollReveal<HTMLDivElement>({ delay: 80, variant: 'image' });
-  const bannerRef = useScrollReveal<HTMLDivElement>({ delay: 60 });
-
   return (
     <section className="section-padding bg-secondary/30">
       <div className="container-custom">
         {/* Title */}
-        <div className="text-center mb-12" ref={titleRef}>
+        <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             Rejoignez la <span className="gradient-text">communauté !</span>
           </h2>
@@ -37,7 +32,7 @@ const CommunitySection = () => {
         </div>
 
         {/* Social Cards */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12" ref={cardsRef}>
+        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
           {/* Instagram Card */}
           <div className="bg-white rounded-3xl p-8 shadow-md border border-border/30">
             <div className="flex items-center gap-4 mb-4">
@@ -100,7 +95,7 @@ const CommunitySection = () => {
         </div>
 
         {/* Hashtag Banner */}
-        <div className="banner-gradient rounded-3xl p-8 lg:p-12 text-center text-white" ref={bannerRef}>
+        <div className="banner-gradient rounded-3xl p-8 lg:p-12 text-center text-white">
           <h3 className="text-2xl lg:text-3xl font-bold mb-4">
             #AmbianceLumeaGlow
           </h3>

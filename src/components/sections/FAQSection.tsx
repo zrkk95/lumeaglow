@@ -5,11 +5,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const FAQSection = () => {
-  const titleRef = useScrollReveal<HTMLDivElement>();
-  const faqRef = useScrollReveal<HTMLDivElement>({ delay: 80 });
   const faqs = [
     {
       question: 'Combien de couleurs peut afficher la lampe méduse ?',
@@ -49,7 +46,7 @@ const FAQSection = () => {
     <section id="faq" className="section-padding bg-background">
       <div className="container-custom">
         {/* Title */}
-        <div className="text-center mb-12" ref={titleRef}>
+        <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             Foire aux <span className="gradient-text">questions</span>
           </h2>
@@ -59,7 +56,7 @@ const FAQSection = () => {
         </div>
 
         {/* FAQ Accordion */}
-        <div className="max-w-3xl mx-auto mb-12" ref={faqRef}>
+        <div className="max-w-3xl mx-auto mb-12">
           <Accordion type="single" defaultValue="item-0" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
               <AccordionItem

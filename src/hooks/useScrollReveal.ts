@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
  * Scroll-reveal hook: applies a one-shot fade + slide-up animation
  * when the element enters the viewport.
  *
- * @param delay – optional stagger delay in ms (default 0)
- * @param variant – 'text' (540ms) | 'image' (650ms)
+ * Uses CSS classes .reveal / .reveal--text / .reveal--img + .is-visible
+ * with requestAnimationFrame to guarantee smooth transitions.
  */
 export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(
   { delay = 0, variant = 'text' }: { delay?: number; variant?: 'text' | 'image' } = {}
@@ -16,25 +16,35 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(
     const el = ref.current;
     if (!el) return;
 
-    // Respect prefers-reduced-motion
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Apply base .reveal class immediately so element starts hidden
+    el.classList.add('reveal');
+    if (variant === 'image') el.classList.add('reveal--img');
+    else el.classList.add('reveal--text');
+
+    if (delay > 0) {
+      el.style.transitionDelay = `${delay}ms`;
+    }
+
     if (prefersReduced) {
-      el.classList.add('sr-visible');
+      el.classList.add('is-visible');
       return;
     }
 
-    // Set initial hidden state + custom props
-    el.classList.add('sr-hidden');
-    el.style.setProperty('--sr-delay', `${delay}ms`);
-    el.style.setProperty('--sr-duration', variant === 'image' ? '650ms' : '540ms');
-
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.remove('sr-hidden');
-          el.classList.add('sr-visible');
-          observer.unobserve(el);
-        }
+        if (!entry.isIntersecting) return;
+
+        // CRITICAL: trigger in next frame so browser registers
+        // the initial state before transitioning
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            el.classList.add('is-visible');
+          });
+        });
+
+        observer.unobserve(el);
       },
       { threshold: 0.12, rootMargin: '0px 0px -10% 0px' }
     );

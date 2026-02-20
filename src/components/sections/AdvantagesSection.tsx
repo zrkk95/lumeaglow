@@ -6,9 +6,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const AdvantagesSection = () => {
   const navigate = useNavigate();
+  const titleRef = useScrollReveal<HTMLDivElement>();
+  const gridRef = useScrollReveal<HTMLDivElement>({ delay: 100, variant: 'image' });
+  const bannerRef = useScrollReveal<HTMLDivElement>({ delay: 60 });
 
   const advantages = [
     {
@@ -51,7 +55,7 @@ const AdvantagesSection = () => {
     <section className="section-padding bg-secondary/30">
       <div className="container-custom">
         {/* Title */}
-        <div className="text-center mb-8 lg:mb-16">
+        <div className="text-center mb-8 lg:mb-16" ref={titleRef}>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             Pourquoi choisir <span className="gradient-text">LumeaGlow</span>
           </h2>
@@ -86,7 +90,7 @@ const AdvantagesSection = () => {
         </div>
 
         {/* Desktop: Grid */}
-        <div className="hidden lg:grid lg:grid-cols-3 gap-6 lg:gap-8 mb-16">
+        <div className="hidden lg:grid lg:grid-cols-3 gap-6 lg:gap-8 mb-16" ref={gridRef}>
           {advantages.map((advantage, index) => (
             <div
               key={advantage.title}
@@ -107,7 +111,7 @@ const AdvantagesSection = () => {
         </div>
 
         {/* CTA Banner */}
-        <div className="banner-gradient rounded-3xl p-8 lg:p-12 text-center text-white">
+        <div className="banner-gradient rounded-3xl p-8 lg:p-12 text-center text-white" ref={bannerRef}>
           <h3 className="text-2xl lg:text-3xl font-bold mb-4">
             Prêt à transformer votre espace ?
           </h3>

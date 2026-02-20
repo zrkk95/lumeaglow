@@ -4,6 +4,7 @@ import { Star, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import reviews from '@/data/reviews';
 import type { Review } from '@/data/reviews';
 import AvisVerifiesLogo from '@/components/AvisVerifiesLogo';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const formatDateShort = (dateStr: string) => {
   const [day, month, year] = dateStr.split('/');
@@ -12,6 +13,7 @@ const formatDateShort = (dateStr: string) => {
 };
 
 const HomeReviewsSlider = () => {
+  const sectionRef = useScrollReveal<HTMLDivElement>({ variant: 'image' });
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     align: 'start',
@@ -58,7 +60,7 @@ const HomeReviewsSlider = () => {
 
   return (
     <section className="section-padding bg-secondary/30">
-      <div className="container-custom">
+      <div className="container-custom" ref={sectionRef}>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3 text-center">
           Ce que disent nos clients
         </h2>

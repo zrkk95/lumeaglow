@@ -5,8 +5,12 @@ import { useCart } from '@/contexts/CartContext';
 import { DEFAULT_PRODUCT, createCheckoutAndRedirect, isShopifyConfigured } from '@/lib/shopify';
 import { toast } from '@/hooks/use-toast';
 import productImage from '@/assets/lampe-meduse-product-new.jpeg';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const ProductSection = () => {
+  const titleRef = useScrollReveal<HTMLDivElement>();
+  const imageRef = useScrollReveal<HTMLDivElement>({ variant: 'image' });
+  const infoRef = useScrollReveal<HTMLDivElement>({ delay: 120 });
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { addItem } = useCart();
@@ -46,7 +50,7 @@ const ProductSection = () => {
     <section id="produit" className="py-12 lg:py-16 bg-background">
       <div className="container-custom">
         {/* Title - Smaller intro */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8" ref={titleRef}>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 animate-fade-in-up">
             Lampe Méduse <span className="gradient-text">LumeaGlow</span>
           </h2>
@@ -60,7 +64,7 @@ const ProductSection = () => {
           <div className="card-premium p-4 sm:p-6 lg:p-8">
             <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
               {/* Product Image - Reduced size on desktop */}
-              <div className="relative aspect-square lg:aspect-[4/5] lg:max-h-[400px] bg-secondary/30 rounded-2xl overflow-hidden">
+              <div className="relative aspect-square lg:aspect-[4/5] lg:max-h-[400px] bg-secondary/30 rounded-2xl overflow-hidden" ref={imageRef}>
                 <img 
                   src={productImage} 
                   alt="Lampe Méduse LumeaGlow" 
@@ -72,7 +76,7 @@ const ProductSection = () => {
               </div>
 
               {/* Product Info */}
-              <div className="space-y-4 lg:space-y-5">
+              <div className="space-y-4 lg:space-y-5" ref={infoRef}>
                 <div>
                   <p className="text-sm text-primary font-semibold uppercase tracking-wide mb-2">
                     Changement de couleur RGB

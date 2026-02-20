@@ -1,10 +1,12 @@
 import { useRef, useEffect, useState } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const VideoSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [muted, setMuted] = useState(true);
+  const headingRef = useScrollReveal<HTMLDivElement>();
+  const videoWrapRef = useScrollReveal<HTMLDivElement>({ variant: 'image', delay: 80 });
 
   useEffect(() => {
     const video = videoRef.current;
@@ -35,7 +37,7 @@ const VideoSection = () => {
   return (
     <section id="video-demo" className="section-padding bg-secondary/30">
       <div className="container-custom">
-        <div className="text-center mb-10">
+        <div className="text-center mb-10" ref={headingRef}>
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
             Voir la lampe <span className="gradient-text">en action</span>
           </h2>
@@ -44,7 +46,7 @@ const VideoSection = () => {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto" ref={containerRef}>
+        <div className="max-w-4xl mx-auto" ref={videoWrapRef}>
           <div className="relative rounded-2xl overflow-hidden shadow-lg bg-black" style={{ aspectRatio: '16/10' }}>
             <video
               ref={videoRef}

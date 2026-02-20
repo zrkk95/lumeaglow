@@ -1,7 +1,10 @@
 import { Users, Award, Clock } from 'lucide-react';
 import ambianceImage from '@/assets/lampe-meduse-ambiance.jpeg';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 const AboutSection = () => {
+  const contentRef = useScrollReveal<HTMLDivElement>();
+  const imageRef = useScrollReveal<HTMLDivElement>({ delay: 140, variant: 'image' });
   const stats = [
     { icon: Users, value: 'Plus de 50 000', label: 'Clients satisfaits' },
     { icon: Award, value: '95 %', label: 'Taux de satisfaction' },
@@ -13,7 +16,7 @@ const AboutSection = () => {
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Column - Content */}
-          <div className="animate-fade-in-up">
+          <div ref={contentRef}>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
               À propos de <span className="gradient-text">LumeaGlow</span>
             </h2>
@@ -50,7 +53,7 @@ const AboutSection = () => {
           </div>
 
           {/* Right Column - Image */}
-          <div className="relative animate-fade-in delay-200">
+          <div className="relative" ref={imageRef}>
             <div className="relative rounded-3xl overflow-hidden shadow-lg">
               <img
                 src={ambianceImage}

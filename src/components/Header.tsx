@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ShoppingBag } from 'lucide-react';
-import { useCart } from '@/contexts/CartContext';
+import { useCartStore } from '@/stores/cartStore';
 import CartDrawer from './CartDrawer';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { totalItems, openCart } = useCart();
+  const items = useCartStore(s => s.items);
+  const openCart = useCartStore(s => s.openCart);
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -23,7 +25,6 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   }, [location]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -53,7 +54,6 @@ const Header = () => {
       return;
     }
 
-    // Handle hash links for scrolling
     const sectionId = href.replace('/#', '');
     if (location.pathname === '/') {
       const element = document.getElementById(sectionId);
@@ -65,7 +65,6 @@ const Header = () => {
     }
   };
 
-  // Handle scroll after navigation
   useEffect(() => {
     if (location.state?.scrollTo) {
       setTimeout(() => {
@@ -101,15 +100,10 @@ const Header = () => {
       >
         <div className="container-custom">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo */}
-            <Link
-              to="/"
-              className="text-xl lg:text-2xl font-bold gradient-text"
-            >
+            <Link to="/" className="text-xl lg:text-2xl font-bold gradient-text">
               LumeaGlow
             </Link>
 
-            {/* Navigation desktop - Only visible on lg+ */}
             <nav className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => (
                 <a
@@ -123,9 +117,7 @@ const Header = () => {
               ))}
             </nav>
 
-            {/* Actions */}
             <div className="flex items-center gap-3">
-              {/* Bouton panier */}
               <button
                 onClick={openCart}
                 className="relative p-2 rounded-full hover:bg-secondary transition-colors"
@@ -139,43 +131,28 @@ const Header = () => {
                 )}
               </button>
 
-              {/* CTA desktop - Only visible on lg+ */}
-              <button
-                onClick={goToProduct}
-                className="hidden lg:inline-flex btn-primary text-sm"
-              >
+              <button onClick={goToProduct} className="hidden lg:inline-flex btn-primary text-sm">
                 Acheter maintenant
               </button>
 
-              {/* Menu mobile toggle - Visible on mobile & tablet */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden p-2 rounded-full hover:bg-secondary transition-colors"
                 aria-label="Toggle menu"
               >
-                {isMobileMenuOpen ? (
-                  <X className="w-5 h-5" />
-                ) : (
-                  <Menu className="w-5 h-5" />
-                )}
+                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu - Full screen overlay with blur */}
       <div
         className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 ${
-          isMobileMenuOpen
-            ? 'opacity-100 visible'
-            : 'opacity-0 invisible pointer-events-none'
+          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
       >
-        {/* Backdrop with blur - Fully opaque white background */}
         <div className="absolute inset-0 bg-white backdrop-blur-md" />
-        
-        {/* Menu content */}
         <nav className="relative z-10 h-full flex flex-col items-center justify-center gap-6 px-6">
           {navLinks.map((link) => (
             <a
@@ -187,16 +164,12 @@ const Header = () => {
               {link.label}
             </a>
           ))}
-          <button
-            onClick={goToProduct}
-            className="mt-6 btn-primary text-lg px-8 py-4"
-          >
+          <button onClick={goToProduct} className="mt-6 btn-primary text-lg px-8 py-4">
             Acheter maintenant
           </button>
         </nav>
       </div>
 
-      {/* Cart Drawer */}
       <CartDrawer />
     </>
   );

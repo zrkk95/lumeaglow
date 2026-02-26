@@ -1,246 +1,282 @@
-/**
- * Configuration Shopify Storefront API
- * 
- * INSTRUCTIONS POUR L'INTÉGRATION SHOPIFY :
- * 
- * 1. Créez une application Shopify Storefront dans votre admin Shopify
- * 2. Récupérez votre Storefront Access Token
- * 3. Ajoutez les variables d'environnement suivantes :
- *    - VITE_SHOPIFY_STORE_DOMAIN : votre-boutique.myshopify.com
- *    - VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN : votre_token_storefront
- * 
- * Pour le développement, vous pouvez créer un fichier .env.local
- */
+import { toast } from 'sonner';
 
-// Variables d'environnement Shopify
-const SHOPIFY_STORE_DOMAIN = import.meta.env.VITE_SHOPIFY_STORE_DOMAIN || '';
-const SHOPIFY_STOREFRONT_ACCESS_TOKEN = import.meta.env.VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN || '';
+// Shopify Storefront API Configuration
+const SHOPIFY_API_VERSION = '2025-07';
+const SHOPIFY_STORE_PERMANENT_DOMAIN = 'kz0976-yp.myshopify.com';
+const SHOPIFY_STOREFRONT_URL = `https://${SHOPIFY_STORE_PERMANENT_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`;
+const SHOPIFY_STOREFRONT_TOKEN = 'f7b676b928fc53f8a7e023b04658cd6d';
 
-// URL de l'API Storefront
-const SHOPIFY_STOREFRONT_URL = SHOPIFY_STORE_DOMAIN 
-  ? `https://${SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`
-  : '';
+// Types
+export interface ShopifyProduct {
+  node: {
+    id: string;
+    title: string;
+    description: string;
+    handle: string;
+    priceRange: {
+      minVariantPrice: {
+        amount: string;
+        currencyCode: string;
+      };
+    };
+    images: {
+      edges: Array<{
+        node: {
+          url: string;
+          altText: string | null;
+        };
+      }>;
+    };
+    variants: {
+      edges: Array<{
+        node: {
+          id: string;
+          title: string;
+          price: {
+            amount: string;
+            currencyCode: string;
+          };
+          availableForSale: boolean;
+          selectedOptions: Array<{
+            name: string;
+            value: string;
+          }>;
+        };
+      }>;
+    };
+    options: Array<{
+      name: string;
+      values: string[];
+    }>;
+  };
+}
 
-// Vérification de la configuration
-export const isShopifyConfigured = () => {
-  return Boolean(SHOPIFY_STORE_DOMAIN && SHOPIFY_STOREFRONT_ACCESS_TOKEN);
-};
-
-// Fonction générique pour les requêtes GraphQL Shopify
-async function shopifyFetch<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
-  if (!isShopifyConfigured()) {
-    throw new Error('Shopify n\'est pas configuré. Veuillez ajouter les variables d\'environnement.');
-  }
-
+// Storefront API helper
+export async function storefrontApiRequest(query: string, variables: Record<string, unknown> = {}) {
   const response = await fetch(SHOPIFY_STOREFRONT_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+      'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN,
     },
     body: JSON.stringify({ query, variables }),
   });
 
-  if (!response.ok) {
-    throw new Error(`Erreur Shopify: ${response.status}`);
-  }
-
-  const json = await response.json();
-
-  if (json.errors) {
-    throw new Error(json.errors[0].message);
-  }
-
-  return json.data;
-}
-
-// Types Shopify
-export interface ShopifyProduct {
-  id: string;
-  title: string;
-  handle: string;
-  description: string;
-  descriptionHtml: string;
-  availableForSale: boolean;
-  priceRange: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
-  images: {
-    edges: Array<{
-      node: {
-        url: string;
-        altText: string | null;
-      };
-    }>;
-  };
-  variants: {
-    edges: Array<{
-      node: {
-        id: string;
-        title: string;
-        availableForSale: boolean;
-        price: {
-          amount: string;
-          currencyCode: string;
-        };
-      };
-    }>;
-  };
-}
-
-export interface ShopifyCart {
-  id: string;
-  checkoutUrl: string;
-  lines: {
-    edges: Array<{
-      node: {
-        id: string;
-        quantity: number;
-        merchandise: {
-          id: string;
-          title: string;
-          product: {
-            title: string;
-          };
-          price: {
-            amount: string;
-          };
-        };
-      };
-    }>;
-  };
-  cost: {
-    totalAmount: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
-}
-
-// Récupérer un produit par son handle
-export async function getProductByHandle(handle: string): Promise<ShopifyProduct | null> {
-  const query = `
-    query getProductByHandle($handle: String!) {
-      productByHandle(handle: $handle) {
-        id
-        title
-        handle
-        description
-        descriptionHtml
-        availableForSale
-        priceRange {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-        images(first: 5) {
-          edges {
-            node {
-              url
-              altText
-            }
-          }
-        }
-        variants(first: 10) {
-          edges {
-            node {
-              id
-              title
-              availableForSale
-              price {
-                amount
-                currencyCode
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  try {
-    const data = await shopifyFetch<{ productByHandle: ShopifyProduct | null }>(query, { handle });
-    return data.productByHandle;
-  } catch (error) {
-    console.error('Erreur lors de la récupération du produit:', error);
+  if (response.status === 402) {
+    toast.error("Shopify: Payment required", {
+      description: "Shopify API access requires an active billing plan. Visit https://admin.shopify.com to upgrade.",
+    });
     return null;
   }
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (data.errors) {
+    throw new Error(`Error calling Shopify: ${data.errors.map((e: { message: string }) => e.message).join(', ')}`);
+  }
+
+  return data;
 }
 
-// Créer un panier Shopify
-export async function createCart(lines: Array<{ merchandiseId: string; quantity: number }>): Promise<ShopifyCart | null> {
-  const query = `
-    mutation createCart($lines: [CartLineInput!]!) {
-      cartCreate(input: { lines: $lines }) {
-        cart {
+// GraphQL Queries & Mutations
+export const PRODUCTS_QUERY = `
+  query GetProducts($first: Int!, $query: String) {
+    products(first: $first, query: $query) {
+      edges {
+        node {
           id
-          checkoutUrl
-          lines(first: 10) {
-            edges {
-              node {
-                id
-                quantity
-                merchandise {
-                  ... on ProductVariant {
-                    id
-                    title
-                    product {
-                      title
-                    }
-                    price {
-                      amount
-                    }
-                  }
-                }
-              }
-            }
-          }
-          cost {
-            totalAmount {
+          title
+          description
+          handle
+          priceRange {
+            minVariantPrice {
               amount
               currencyCode
             }
           }
-        }
-        userErrors {
-          field
-          message
+          images(first: 5) {
+            edges {
+              node {
+                url
+                altText
+              }
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                title
+                price {
+                  amount
+                  currencyCode
+                }
+                availableForSale
+                selectedOptions {
+                  name
+                  value
+                }
+              }
+            }
+          }
+          options {
+            name
+            values
+          }
         }
       }
     }
-  `;
+  }
+`;
 
+export const CART_QUERY = `
+  query cart($id: ID!) {
+    cart(id: $id) { id totalQuantity }
+  }
+`;
+
+export const CART_CREATE_MUTATION = `
+  mutation cartCreate($input: CartInput!) {
+    cartCreate(input: $input) {
+      cart {
+        id
+        checkoutUrl
+        lines(first: 100) { edges { node { id merchandise { ... on ProductVariant { id } } } } }
+      }
+      userErrors { field message }
+    }
+  }
+`;
+
+export const CART_LINES_ADD_MUTATION = `
+  mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        id
+        lines(first: 100) { edges { node { id merchandise { ... on ProductVariant { id } } } } }
+      }
+      userErrors { field message }
+    }
+  }
+`;
+
+export const CART_LINES_UPDATE_MUTATION = `
+  mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    cartLinesUpdate(cartId: $cartId, lines: $lines) {
+      cart { id }
+      userErrors { field message }
+    }
+  }
+`;
+
+export const CART_LINES_REMOVE_MUTATION = `
+  mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+      cart { id }
+      userErrors { field message }
+    }
+  }
+`;
+
+// Helper functions
+export function formatCheckoutUrl(checkoutUrl: string): string {
   try {
-    const data = await shopifyFetch<{ cartCreate: { cart: ShopifyCart | null } }>(query, { lines });
-    return data.cartCreate.cart;
-  } catch (error) {
-    console.error('Erreur lors de la création du panier:', error);
+    const url = new URL(checkoutUrl);
+    url.searchParams.set('channel', 'online_store');
+    return url.toString();
+  } catch {
+    return checkoutUrl;
+  }
+}
+
+function isCartNotFoundError(userErrors: Array<{ field: string[] | null; message: string }>): boolean {
+  return userErrors.some(e => e.message.toLowerCase().includes('cart not found') || e.message.toLowerCase().includes('does not exist'));
+}
+
+// Cart API functions
+export interface CartItem {
+  lineId: string | null;
+  product: ShopifyProduct;
+  variantId: string;
+  variantTitle: string;
+  price: { amount: string; currencyCode: string };
+  quantity: number;
+  selectedOptions: Array<{ name: string; value: string }>;
+}
+
+export async function createShopifyCart(item: CartItem): Promise<{ cartId: string; checkoutUrl: string; lineId: string } | null> {
+  const data = await storefrontApiRequest(CART_CREATE_MUTATION, {
+    input: { lines: [{ quantity: item.quantity, merchandiseId: item.variantId }] },
+  });
+
+  if (data?.data?.cartCreate?.userErrors?.length > 0) {
+    console.error('Cart creation failed:', data.data.cartCreate.userErrors);
     return null;
   }
+
+  const cart = data?.data?.cartCreate?.cart;
+  if (!cart?.checkoutUrl) return null;
+
+  const lineId = cart.lines.edges[0]?.node?.id;
+  if (!lineId) return null;
+
+  return { cartId: cart.id, checkoutUrl: formatCheckoutUrl(cart.checkoutUrl), lineId };
 }
 
-// Créer un checkout et rediriger
-export async function createCheckoutAndRedirect(lines: Array<{ merchandiseId: string; quantity: number }>): Promise<void> {
-  const cart = await createCart(lines);
-  
-  if (cart?.checkoutUrl) {
-    window.location.href = cart.checkoutUrl;
-  } else {
-    throw new Error('Impossible de créer le checkout');
+export async function addLineToShopifyCart(cartId: string, item: CartItem): Promise<{ success: boolean; lineId?: string; cartNotFound?: boolean }> {
+  const data = await storefrontApiRequest(CART_LINES_ADD_MUTATION, {
+    cartId,
+    lines: [{ quantity: item.quantity, merchandiseId: item.variantId }],
+  });
+
+  const userErrors = data?.data?.cartLinesAdd?.userErrors || [];
+  if (isCartNotFoundError(userErrors)) return { success: false, cartNotFound: true };
+  if (userErrors.length > 0) {
+    console.error('Add line failed:', userErrors);
+    return { success: false };
   }
+
+  const lines = data?.data?.cartLinesAdd?.cart?.lines?.edges || [];
+  const newLine = lines.find((l: { node: { id: string; merchandise: { id: string } } }) => l.node.merchandise.id === item.variantId);
+  return { success: true, lineId: newLine?.node?.id };
 }
 
-// Données produit par défaut (fallback quand Shopify n'est pas configuré)
-export const DEFAULT_PRODUCT = {
-  id: 'lampe-meduse-lumeaglow',
-  variantId: 'lampe-meduse-lumeaglow-default',
-  title: 'Lampe Méduse LumeaGlow',
-  price: 29.95,
-  description: 'Lampe LED à couleurs changeantes RGB',
-  image: '/placeholder.svg',
-  available: true,
-};
+export async function updateShopifyCartLine(cartId: string, lineId: string, quantity: number): Promise<{ success: boolean; cartNotFound?: boolean }> {
+  const data = await storefrontApiRequest(CART_LINES_UPDATE_MUTATION, {
+    cartId,
+    lines: [{ id: lineId, quantity }],
+  });
+
+  const userErrors = data?.data?.cartLinesUpdate?.userErrors || [];
+  if (isCartNotFoundError(userErrors)) return { success: false, cartNotFound: true };
+  if (userErrors.length > 0) {
+    console.error('Update line failed:', userErrors);
+    return { success: false };
+  }
+  return { success: true };
+}
+
+export async function removeLineFromShopifyCart(cartId: string, lineId: string): Promise<{ success: boolean; cartNotFound?: boolean }> {
+  const data = await storefrontApiRequest(CART_LINES_REMOVE_MUTATION, {
+    cartId,
+    lineIds: [lineId],
+  });
+
+  const userErrors = data?.data?.cartLinesRemove?.userErrors || [];
+  if (isCartNotFoundError(userErrors)) return { success: false, cartNotFound: true };
+  if (userErrors.length > 0) {
+    console.error('Remove line failed:', userErrors);
+    return { success: false };
+  }
+  return { success: true };
+}
+
+// Fetch products
+export async function fetchShopifyProducts(first = 20, query?: string): Promise<ShopifyProduct[]> {
+  const data = await storefrontApiRequest(PRODUCTS_QUERY, { first, query });
+  return data?.data?.products?.edges || [];
+}

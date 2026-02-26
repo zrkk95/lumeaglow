@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "@/components/ScrollToTop";
 import { HelmetProvider } from "react-helmet-async";
-import { CartProvider } from "@/contexts/CartContext";
+import { useCartSync } from "@/hooks/useCartSync";
 
 // Pages
 import Index from "./pages/Index";
@@ -24,35 +24,39 @@ import ProductPage from "./pages/ProductPage";
 
 const queryClient = new QueryClient();
 
+const AppContent = () => {
+  useCartSync();
+  return (
+    <BrowserRouter>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/produit/lampe-meduse-lumeaglow" element={<ProductPage />} />
+        <Route path="/produit/lampe-meduse-aquaglow" element={<ProductPage />} />
+        <Route path="/panier" element={<Panier />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/cgv" element={<CGV />} />
+        <Route path="/confidentialite" element={<Confidentialite />} />
+        <Route path="/livraison" element={<Livraison />} />
+        <Route path="/retours" element={<Retours />} />
+        <Route path="/garantie" element={<Garantie />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/produit/lampe-meduse-lumeaglow" element={<ProductPage />} />
-              {/* Legacy route redirect */}
-              <Route path="/produit/lampe-meduse-aquaglow" element={<ProductPage />} />
-              <Route path="/panier" element={<Panier />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/confirmation" element={<Confirmation />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/mentions-legales" element={<MentionsLegales />} />
-              <Route path="/cgv" element={<CGV />} />
-              <Route path="/confidentialite" element={<Confidentialite />} />
-              <Route path="/livraison" element={<Livraison />} />
-              <Route path="/retours" element={<Retours />} />
-              <Route path="/garantie" element={<Garantie />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </CartProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <AppContent />
+      </TooltipProvider>
     </QueryClientProvider>
   </HelmetProvider>
 );

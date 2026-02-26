@@ -1,34 +1,20 @@
-import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
-import { useCart } from '@/contexts/CartContext';
-import { Link } from 'react-router-dom';
-import { createCheckoutAndRedirect, isShopifyConfigured } from '@/lib/shopify';
-import { useState } from 'react';
+import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Loader2 } from 'lucide-react';
+import { useCartStore } from '@/stores/cartStore';
+import { useEffect } from 'react';
 
 const CartDrawer = () => {
-  const { items, isOpen, closeCart, totalItems, totalPrice, updateQuantity, removeItem } = useCart();
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const { items, isOpen, isLoading, isSyncing, closeCart, updateQuantity, removeItem, getCheckoutUrl, syncCart } = useCartStore();
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.price.amount) * item.quantity), 0);
+  const currency = items[0]?.price.currencyCode || 'EUR';
 
-  const handleCheckout = async () => {
-    if (!isShopifyConfigured()) {
-      // Redirection vers la page checkout locale si Shopify n'est pas configuré
+  useEffect(() => { if (isOpen) syncCart(); }, [isOpen, syncCart]);
+
+  const handleCheckout = () => {
+    const checkoutUrl = getCheckoutUrl();
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank');
       closeCart();
-      window.location.href = '/checkout';
-      return;
-    }
-
-    setIsCheckingOut(true);
-    try {
-      const lines = items.map((item) => ({
-        merchandiseId: item.variantId,
-        quantity: item.quantity,
-      }));
-      await createCheckoutAndRedirect(lines);
-    } catch (error) {
-      console.error('Erreur checkout:', error);
-      // Fallback vers la page checkout locale
-      window.location.href = '/checkout';
-    } finally {
-      setIsCheckingOut(false);
     }
   };
 
@@ -74,70 +60,54 @@ const CartDrawer = () => {
                 <p className="text-muted-foreground mb-4">
                   Votre panier est vide
                 </p>
-                <button
-                  onClick={closeCart}
-                  className="btn-secondary"
-                >
+                <button onClick={closeCart} className="btn-secondary">
                   Continuer mes achats
                 </button>
               </div>
             ) : (
               <div className="space-y-4">
-                {items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex gap-4 p-3 bg-secondary/30 rounded-xl"
-                  >
-                    {/* Image */}
-                    <div className="w-20 h-20 bg-secondary rounded-lg flex-shrink-0 overflow-hidden">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-sm truncate">
-                        {item.title}
-                      </h3>
-                      <p className="text-primary font-semibold mt-1">
-                        {item.price.toFixed(2)} €
-                      </p>
-
-                      {/* Quantité */}
-                      <div className="flex items-center gap-2 mt-2">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="p-1 rounded-md bg-background hover:bg-secondary transition-colors"
-                          aria-label="Diminuer la quantité"
-                        >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                        <span className="w-8 text-center text-sm font-medium">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="p-1 rounded-md bg-background hover:bg-secondary transition-colors"
-                          aria-label="Augmenter la quantité"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </button>
+                {items.map((item) => {
+                  const image = item.product.node.images?.edges?.[0]?.node;
+                  return (
+                    <div key={item.variantId} className="flex gap-4 p-3 bg-secondary/30 rounded-xl">
+                      <div className="w-20 h-20 bg-secondary rounded-lg flex-shrink-0 overflow-hidden">
+                        {image && (
+                          <img src={image.url} alt={image.altText || item.product.node.title} className="w-full h-full object-cover" />
+                        )}
                       </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-medium text-sm truncate">{item.product.node.title}</h3>
+                        {item.variantTitle !== 'Default Title' && (
+                          <p className="text-xs text-muted-foreground">{item.variantTitle}</p>
+                        )}
+                        <p className="text-primary font-semibold mt-1">
+                          {parseFloat(item.price.amount).toFixed(2)} €
+                        </p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <button
+                            onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
+                            className="p-1 rounded-md bg-background hover:bg-secondary transition-colors"
+                          >
+                            <Minus className="w-4 h-4" />
+                          </button>
+                          <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
+                            className="p-1 rounded-md bg-background hover:bg-secondary transition-colors"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => removeItem(item.variantId)}
+                        className="p-2 text-muted-foreground hover:text-destructive transition-colors self-start"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
-
-                    {/* Supprimer */}
-                    <button
-                      onClick={() => removeItem(item.id)}
-                      className="p-2 text-muted-foreground hover:text-destructive transition-colors self-start"
-                      aria-label="Supprimer du panier"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -145,26 +115,18 @@ const CartDrawer = () => {
           {/* Footer */}
           {items.length > 0 && (
             <div className="border-t border-border p-4 space-y-4">
-              {/* Total */}
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Total</span>
-                <span className="text-xl font-bold">
-                  {totalPrice.toFixed(2)} €
-                </span>
+                <span className="text-xl font-bold">{totalPrice.toFixed(2)} €</span>
               </div>
-
-              {/* Actions */}
               <div className="space-y-2">
                 <button
                   onClick={handleCheckout}
-                  disabled={isCheckingOut}
+                  disabled={isLoading || isSyncing}
                   className="btn-primary w-full flex items-center justify-center gap-2"
                 >
-                  {isCheckingOut ? (
-                    <>
-                      <span className="animate-spin w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full" />
-                      Redirection...
-                    </>
+                  {isLoading || isSyncing ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
                     <>
                       Commander maintenant
@@ -172,16 +134,7 @@ const CartDrawer = () => {
                     </>
                   )}
                 </button>
-                <Link
-                  to="/panier"
-                  onClick={closeCart}
-                  className="btn-secondary w-full text-center"
-                >
-                  Voir le panier
-                </Link>
               </div>
-
-              {/* Réassurance */}
               <p className="text-xs text-center text-muted-foreground">
                 Paiement 100% sécurisé via Shopify
               </p>

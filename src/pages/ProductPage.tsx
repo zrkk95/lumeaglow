@@ -5,8 +5,8 @@ import { ShoppingCart, Check, Minus, Plus, ArrowRight, Star } from 'lucide-react
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProductImageSlider from '@/components/ProductImageSlider';
-import { useCart } from '@/contexts/CartContext';
-import { DEFAULT_PRODUCT, createCheckoutAndRedirect, isShopifyConfigured } from '@/lib/shopify';
+import { useCartStore } from '@/stores/cartStore';
+import type { ShopifyProduct } from '@/lib/shopify';
 import { toast } from '@/hooks/use-toast';
 import {
   Accordion,
@@ -17,7 +17,6 @@ import {
 import ReviewsSection from '@/components/sections/ReviewsSection';
 import AvisVerifiesLogo from '@/components/AvisVerifiesLogo';
 
-// Import all carousel images
 import productImage from '@/assets/lampe-meduse-product-new.jpeg';
 import carousel1Orange from '@/assets/carousel-1-orange.jpeg';
 import carousel2White from '@/assets/carousel-2-white.jpeg';
@@ -25,14 +24,38 @@ import carousel3Desk from '@/assets/carousel-3-desk.jpeg';
 import carousel4Marble from '@/assets/carousel-4-marble.jpeg';
 import carousel5Colors from '@/assets/carousel-5-colors.jpeg';
 
+const PRODUCT_FOR_CART: ShopifyProduct = {
+  node: {
+    id: 'lampe-meduse-lumeaglow',
+    title: 'Lampe Méduse LumeaGlow',
+    description: 'Lampe LED à couleurs changeantes RGB',
+    handle: 'lampe-meduse-lumeaglow',
+    priceRange: { minVariantPrice: { amount: '29.95', currencyCode: 'EUR' } },
+    images: { edges: [{ node: { url: productImage, altText: 'Lampe Méduse LumeaGlow' } }] },
+    variants: {
+      edges: [{
+        node: {
+          id: 'lampe-meduse-lumeaglow-default',
+          title: 'Default Title',
+          price: { amount: '29.95', currencyCode: 'EUR' },
+          availableForSale: true,
+          selectedOptions: [],
+        },
+      }],
+    },
+    options: [],
+  },
+};
+
 const ProductPage = () => {
   const [quantity, setQuantity] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
-  const { addItem } = useCart();
-  const product = DEFAULT_PRODUCT;
+  const addItem = useCartStore(s => s.addItem);
+  const isLoading = useCartStore(s => s.isLoading);
+  const getCheckoutUrl = useCartStore(s => s.getCheckoutUrl);
 
-  // Carousel images array
+  const variant = PRODUCT_FOR_CART.node.variants.edges[0].node;
+
   const carouselImages = [
     { src: productImage, alt: 'Lampe Méduse LumeaGlow - Vue principale', type: 'image' as const },
     { src: carousel1Orange, alt: 'Lampe Méduse LumeaGlow - Ambiance orange', type: 'image' as const },
@@ -43,30 +66,30 @@ const ProductPage = () => {
     { src: '/videos/lumeaglow-demo.mp4', alt: 'Vidéo démo', type: 'video' as const },
   ];
 
-  const handleAddToCart = () => {
-    addItem({
-      id: product.id,
-      variantId: product.variantId,
-      title: product.title,
-      price: product.price,
-      image: productImage,
-    }, quantity);
-    toast({ title: "Ajouté au panier", description: `${quantity}x ${product.title}` });
+  const handleAddToCart = async () => {
+    await addItem({
+      product: PRODUCT_FOR_CART,
+      variantId: variant.id,
+      variantTitle: variant.title,
+      price: variant.price,
+      quantity,
+      selectedOptions: variant.selectedOptions,
+    });
+    toast({ title: "Ajouté au panier", description: `${quantity}x Lampe Méduse LumeaGlow` });
   };
 
   const handleBuyNow = async () => {
-    setIsLoading(true);
-    if (!isShopifyConfigured()) {
-      addItem({ id: product.id, variantId: product.variantId, title: product.title, price: product.price, image: productImage }, quantity);
-      window.location.href = '/checkout';
-      return;
-    }
-    try {
-      await createCheckoutAndRedirect([{ merchandiseId: product.variantId, quantity }]);
-    } catch (error) {
-      toast({ title: "Erreur", description: "Impossible de créer la commande.", variant: "destructive" });
-    } finally {
-      setIsLoading(false);
+    await addItem({
+      product: PRODUCT_FOR_CART,
+      variantId: variant.id,
+      variantTitle: variant.title,
+      price: variant.price,
+      quantity,
+      selectedOptions: variant.selectedOptions,
+    });
+    const checkoutUrl = useCartStore.getState().getCheckoutUrl();
+    if (checkoutUrl) {
+      window.open(checkoutUrl, '_blank');
     }
   };
 
@@ -87,7 +110,6 @@ const ProductPage = () => {
     { question: 'Quelle est la consommation électrique ?', answer: 'Très faible, environ 5W via alimentation USB.' },
   ];
 
-
   return (
     <>
       <Helmet>
@@ -98,27 +120,17 @@ const ProductPage = () => {
       <Header />
 
       <main className="pt-16">
-        {/* Product Section with Carousel */}
         <section className="py-6 sm:py-8 lg:py-10 bg-background">
           <div className="container-custom">
-            {/* Mobile: single column, Desktop: 2 columns */}
             <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-12 items-start">
-              {/* Image Carousel */}
-              <ProductImageSlider
-                carouselImages={carouselImages}
-                selectedImage={selectedImage}
-                setSelectedImage={setSelectedImage}
-              />
+              <ProductImageSlider carouselImages={carouselImages} selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
 
-              {/* Product Info - Mobile: proper order */}
               <div className="w-full space-y-4 lg:space-y-6 lg:sticky lg:top-24">
-                {/* 1. Title */}
                 <div>
                   <p className="text-sm text-primary font-semibold uppercase tracking-wide mb-2">Changement de couleur RGB</p>
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 lg:mb-4">Lampe Méduse LumeaGlow</h1>
                   <p className="text-sm lg:text-base text-muted-foreground mb-3 lg:mb-4">Transitions de couleurs dynamiques – parcours automatiquement des millions de couleurs éclatantes.</p>
-                  
-                  {/* Rating badge - click to scroll to reviews */}
+
                   <button
                     onClick={() => document.getElementById('reviews-section')?.scrollIntoView({ behavior: 'smooth' })}
                     className="flex flex-wrap items-center gap-2 group cursor-pointer"
@@ -135,19 +147,16 @@ const ProductPage = () => {
                   <p className="text-[10px] text-muted-foreground mt-0.5">Basé sur 14 avis soumis à un contrôle</p>
                 </div>
 
-                {/* 2. Price */}
                 <div className="flex items-baseline gap-3">
                   <span className="text-3xl lg:text-4xl font-bold gradient-text">29,95 €</span>
                   <span className="text-muted-foreground line-through">49,90 €</span>
                   <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">-40%</span>
                 </div>
 
-                {/* 3. Stock */}
                 <div className="flex items-center gap-2 text-sm text-primary font-medium">
                   <Check className="w-4 h-4" /><span>En stock – Expédition sous 24–48 h</span>
                 </div>
 
-                {/* 4. Quantity */}
                 <div>
                   <label className="text-sm font-medium mb-2 block">Quantité</label>
                   <div className="inline-flex items-center border border-border rounded-xl">
@@ -157,22 +166,19 @@ const ProductPage = () => {
                   </div>
                 </div>
 
-                {/* 5. Buttons */}
                 <div className="space-y-3">
-                  <button onClick={handleAddToCart} className="w-full btn-primary flex items-center justify-center gap-2">
-                    <ShoppingCart className="w-5 h-5" />Ajouter au panier – {(product.price * quantity).toFixed(2).replace('.', ',')} €
+                  <button onClick={handleAddToCart} disabled={isLoading} className="w-full btn-primary flex items-center justify-center gap-2">
+                    <ShoppingCart className="w-5 h-5" />Ajouter au panier – {(29.95 * quantity).toFixed(2).replace('.', ',')} €
                   </button>
                   <button onClick={handleBuyNow} disabled={isLoading} className="w-full btn-outline-primary flex items-center justify-center gap-2">
                     {isLoading ? 'Traitement...' : <>Commander maintenant <ArrowRight className="w-5 h-5" /></>}
                   </button>
                 </div>
 
-                {/* 6. Quick features */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 lg:pt-4">
                   {['Tentacules en silicone réalistes', 'LED RGB multicolores', 'Modes automatiques & ambiance', 'Fonctionnement silencieux', 'Alimentation USB', 'Garantie 12 mois'].map((feature) => (
                     <div key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Check className="w-4 h-4 text-primary flex-shrink-0" />
-                      <span>{feature}</span>
+                      <Check className="w-4 h-4 text-primary flex-shrink-0" /><span>{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -181,7 +187,6 @@ const ProductPage = () => {
           </div>
         </section>
 
-        {/* Specifications */}
         <section className="section-padding bg-secondary/30">
           <div className="container-custom">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Fiche produit <span className="gradient-text">détaillée</span></h2>
@@ -198,7 +203,6 @@ const ProductPage = () => {
           </div>
         </section>
 
-        {/* Mini FAQ */}
         <section className="section-padding bg-background">
           <div className="container-custom">
             <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Questions <span className="gradient-text">fréquentes</span></h2>
@@ -215,10 +219,7 @@ const ProductPage = () => {
           </div>
         </section>
 
-        {/* Video Section - same behavior as homepage */}
         <ProductVideoSection />
-
-        {/* Reviews Section */}
         <ReviewsSection />
       </main>
 
@@ -236,11 +237,7 @@ const ProductVideoSection = () => {
     if (!video) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
+        if (entry.isIntersecting) { video.play().catch(() => {}); } else { video.pause(); }
       },
       { threshold: 0.4 }
     );
@@ -263,16 +260,8 @@ const ProductVideoSection = () => {
         </h2>
         <div className="max-w-4xl mx-auto">
           <div className="relative rounded-2xl overflow-hidden shadow-lg bg-black" style={{ aspectRatio: '16/10' }}>
-            <video
-              ref={videoRef}
-              className="w-full h-full object-cover"
-              muted={muted}
-              loop
-              playsInline
-              preload="metadata"
-            >
+            <video ref={videoRef} className="w-full h-full object-cover" muted={muted} loop playsInline preload="metadata">
               <source src="/videos/lumeaglow-demo.mp4" type="video/mp4" />
-              Votre navigateur ne supporte pas la lecture de vidéos.
             </video>
             <button
               onClick={toggleMute}

@@ -26,7 +26,7 @@ import carousel5Colors from '@/assets/carousel-5-colors.jpeg';
 
 const PRODUCT_FOR_CART: ShopifyProduct = {
   node: {
-    id: 'lampe-meduse-lumeaglow',
+    id: 'gid://shopify/Product/16135057801561',
     title: 'Lampe Méduse LumeaGlow',
     description: 'Lampe LED à couleurs changeantes RGB',
     handle: 'lampe-meduse-lumeaglow',
@@ -35,15 +35,15 @@ const PRODUCT_FOR_CART: ShopifyProduct = {
     variants: {
       edges: [{
         node: {
-          id: 'lampe-meduse-lumeaglow-default',
+          id: 'gid://shopify/ProductVariant/57384636088665',
           title: 'Default Title',
           price: { amount: '29.95', currencyCode: 'EUR' },
           availableForSale: true,
-          selectedOptions: [],
+          selectedOptions: [{ name: 'Title', value: 'Default Title' }],
         },
       }],
     },
-    options: [],
+    options: [{ name: 'Title', values: ['Default Title'] }],
   },
 };
 

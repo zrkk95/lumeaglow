@@ -54,7 +54,7 @@ const VideoSection = () => {
               playsInline
               preload="metadata"
             >
-              <source src="/videos/lumeaglow-demo.mp4" type="video/mp4" />
+              <source src={`${import.meta.env.BASE_URL}videos/lumeaglow-demo.mp4`} type="video/mp4" />
               Votre navigateur ne supporte pas la lecture de vidéos.
             </video>
             {/* Mute toggle */}

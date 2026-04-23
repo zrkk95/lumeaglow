@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ShoppingCart, Check, Minus, Plus, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCartStore } from '@/stores/cartStore';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import type { ShopifyProduct } from '@/lib/shopify';
 import productImage from '@/assets/lampe-meduse-product-new.jpeg';
 
@@ -47,7 +47,7 @@ const ProductSection = () => {
       quantity,
       selectedOptions: variant.selectedOptions,
     });
-    toast({ title: "Ajouté au panier", description: `${quantity}x Lampe Méduse LumeaGlow` });
+    toast.success("Ajouté au panier", { description: `${quantity}× Lampe Méduse LumeaGlow` });
   };
 
   const handleBuyNow = () => {
@@ -79,7 +79,7 @@ const ProductSection = () => {
           <div className="card-premium p-4 sm:p-6 lg:p-8">
             <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
               <div className="relative aspect-square lg:aspect-[4/5] lg:max-h-[400px] bg-secondary/30 rounded-2xl overflow-hidden">
-                <img src={productImage} alt="Lampe Méduse LumeaGlow" className="w-full h-full object-cover" loading="lazy" width={417} height={400} />
+                <img src={productImage} alt="Lampe Méduse LumeaGlow" className="w-full h-full object-cover" loading="eager" decoding="async" fetchPriority="high" width={417} height={400} />
               </div>
 
               <div className="space-y-4 lg:space-y-5">

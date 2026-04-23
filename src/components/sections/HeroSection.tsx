@@ -25,17 +25,18 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      {/* Background Image with Overlay - Reduced height on desktop */}
+      {/* Background Image with Overlay */}
       <div className="absolute inset-0 overflow-hidden">
         <img
           src={heroImage}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-center lg:object-bottom"
+          className="absolute inset-0 w-full h-full object-cover object-center lg:object-[75%_center] lg:scale-110"
           fetchPriority="high"
+          decoding="async"
           width={1342}
           height={940}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/10 lg:to-transparent" />
       </div>
 
       <div className="container-custom relative z-10">

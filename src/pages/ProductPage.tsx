@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import ProductImageSlider from '@/components/ProductImageSlider';
 import { useCartStore } from '@/stores/cartStore';
 import type { ShopifyProduct } from '@/lib/shopify';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import {
   Accordion,
   AccordionContent,
@@ -75,7 +75,7 @@ const ProductPage = () => {
       quantity,
       selectedOptions: variant.selectedOptions,
     });
-    toast({ title: "Ajouté au panier", description: `${quantity}x Lampe Méduse LumeaGlow` });
+    toast.success("Ajouté au panier", { description: `${quantity}× Lampe Méduse LumeaGlow` });
   };
 
   const handleBuyNow = async () => {

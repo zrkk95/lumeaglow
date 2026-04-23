@@ -54,7 +54,13 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Sonner />
+        <Sonner
+          position="top-right"
+          duration={2500}
+          closeButton
+          richColors={false}
+          offset={88}
+        />
         <AppContent />
       </TooltipProvider>
     </QueryClientProvider>

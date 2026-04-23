@@ -17,12 +17,12 @@ import {
 import ReviewsSection from '@/components/sections/ReviewsSection';
 import AvisVerifiesLogo from '@/components/AvisVerifiesLogo';
 
-import productImage from '@/assets/lampe-meduse-product-new.jpeg';
-import carousel1Orange from '@/assets/carousel-1-orange.jpeg';
-import carousel2White from '@/assets/carousel-2-white.jpeg';
-import carousel3Desk from '@/assets/carousel-3-desk.jpeg';
-import carousel4Marble from '@/assets/carousel-4-marble.jpeg';
-import carousel5Colors from '@/assets/carousel-5-colors.jpeg';
+import productImage from '@/assets/lampe-meduse-product-new.webp';
+import carousel1Orange from '@/assets/carousel-1-orange.webp';
+import carousel2White from '@/assets/carousel-2-white.webp';
+import carousel3Desk from '@/assets/carousel-3-desk.webp';
+import carousel4Marble from '@/assets/carousel-4-marble.webp';
+import carousel5Colors from '@/assets/carousel-5-colors.webp';
 
 const PRODUCT_FOR_CART: ShopifyProduct = {
   node: {

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCartStore } from '@/stores/cartStore';
 import { toast } from 'sonner';
 import type { ShopifyProduct } from '@/lib/shopify';
-import productImage from '@/assets/lampe-meduse-product-new.jpeg';
+import productImage from '@/assets/lampe-meduse-product-new.webp';
 
 // Real Shopify product data
 const PRODUCT_FOR_CART: ShopifyProduct = {

@@ -1,5 +1,5 @@
 import { Users, Award, Clock } from 'lucide-react';
-import ambianceImage from '@/assets/lampe-meduse-ambiance.jpeg';
+import ambianceImage from '@/assets/lampe-meduse-ambiance.webp';
 
 const AboutSection = () => {
   const stats = [
@@ -57,6 +57,7 @@ const AboutSection = () => {
                 alt="Lampe méduse LumeaGlow dans une ambiance cosy"
                 className="w-full h-auto object-cover aspect-[4/5]"
                 loading="lazy"
+                decoding="async"
                 width={748}
                 height={935}
               />

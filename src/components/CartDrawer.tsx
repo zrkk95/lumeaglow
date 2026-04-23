@@ -72,7 +72,7 @@ const CartDrawer = () => {
                     <div key={item.variantId} className="flex gap-4 p-3 bg-secondary/30 rounded-xl">
                       <div className="w-20 h-20 bg-secondary rounded-lg flex-shrink-0 overflow-hidden">
                         {image && (
-                          <img src={image.url} alt={image.altText || item.product.node.title} className="w-full h-full object-cover" />
+                          <img src={image.url} alt={image.altText || item.product.node.title} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">

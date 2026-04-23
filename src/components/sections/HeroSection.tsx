@@ -1,6 +1,6 @@
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import heroImage from '@/assets/lampe-meduse-hero.png';
+import heroImage from '@/assets/lampe-meduse-hero.webp';
 
 const HeroSection = () => {
   const navigate = useNavigate();

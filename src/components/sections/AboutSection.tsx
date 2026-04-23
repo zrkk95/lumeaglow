@@ -1,5 +1,5 @@
 import { Users, Award, Clock } from 'lucide-react';
-import ambianceImage from '@/assets/lampe-meduse-ambiance.jpeg';
+import ambianceImage from '@/assets/lampe-meduse-ambiance.webp';
 
 const AboutSection = () => {
   const stats = [

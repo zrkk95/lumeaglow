@@ -63,6 +63,9 @@ const ProductImageSlider = ({ carouselImages, selectedImage, setSelectedImage }:
                       alt={image.alt}
                       className="w-full h-full object-contain lg:object-cover"
                       draggable={false}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                      fetchPriority={index === 0 ? 'high' : 'auto'}
                     />
                     <button
                       className="absolute top-4 right-4 w-10 h-10 bg-white/80 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
@@ -99,6 +102,8 @@ const ProductImageSlider = ({ carouselImages, selectedImage, setSelectedImage }:
                 src={image.src}
                 alt={image.alt}
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
             )}
           </button>
